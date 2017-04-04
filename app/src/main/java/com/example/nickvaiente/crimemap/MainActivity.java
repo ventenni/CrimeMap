@@ -16,6 +16,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 
+
 public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle savedInstanceState) {
@@ -38,4 +39,6 @@ public class MainActivity extends Activity {
 
         map.invalidate();
     }
+
+
 }
