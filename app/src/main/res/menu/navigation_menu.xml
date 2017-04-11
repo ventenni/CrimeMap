@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.nickvaiente.crimemap.MainActivity">
+
+    <item android:id="@+id/nav_saferoute"
+        android:title="Safe Route"/>
+    <item android:id="@+id/nav_compare"
+        android:title="Compare Areas"/>
+    <item android:id="@+id/nav_help"
+        android:title="Help"/>
+    <item android:id="@+id/nav_about"
+        android:title="About"/>
+</menu>
