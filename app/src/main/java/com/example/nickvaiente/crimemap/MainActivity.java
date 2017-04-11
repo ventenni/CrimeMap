@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
         GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
         IMapController mapController = map.getController();
-        mapController.setZoom(18);
+        mapController.setZoom(15);
         mapController.setCenter(startPoint);
 
         Marker startMarker = new Marker(map);
