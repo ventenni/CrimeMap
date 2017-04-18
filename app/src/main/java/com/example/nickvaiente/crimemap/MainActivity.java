@@ -128,6 +128,11 @@ public class MainActivity extends Activity {
             nodeMarker.setPosition(node.mLocation);
             nodeMarker.setIcon(nodeIcon);
             nodeMarker.setTitle("Step " + i);
+//          Below code adds travel instructions to each marker
+            nodeMarker.setSnippet(node.mInstructions);
+            nodeMarker.setSubDescription(Road.getLengthDurationText(this, node.mLength, node.mDuration));
+            Drawable icon = getResources().getDrawable(R.mipmap.marker, null);
+            nodeMarker.setImage(icon);
             map.getOverlays().add(nodeMarker);
         }
 
