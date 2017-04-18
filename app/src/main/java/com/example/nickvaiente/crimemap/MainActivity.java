@@ -1,9 +1,11 @@
 package com.example.nickvaiente.crimemap;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +17,11 @@ import android.view.MenuItem;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.location.NominatimPOIProvider;
 import org.osmdroid.bonuspack.location.POI;
+import org.osmdroid.bonuspack.routing.MapQuestRoadManager;
 import org.osmdroid.bonuspack.routing.OSRMRoadManager;
 import org.osmdroid.bonuspack.routing.Road;
 import org.osmdroid.bonuspack.routing.RoadManager;
+import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -31,12 +35,17 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle savedInstanceState) {
+//      Disable Strict Mode
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MapView map = (MapView) findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
+
 
 
 //      Sets the marker coordinates
@@ -76,8 +85,11 @@ public class MainActivity extends Activity {
             map.getOverlays().add(newMark);
         }
 
+
 //      This adds markers when the app loads
         Marker startMarker = new Marker(map);
+        startMarker.setTitle("Start point");
+
         startMarker.setPosition(startPoint);
         startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
@@ -85,36 +97,43 @@ public class MainActivity extends Activity {
         extraMarker.setPosition(extraPoint);
         extraMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
-
         map.getOverlays().add(startMarker);
         map.getOverlays().add(extraMarker);
 
 
+//      This adds an overlay to show the route
+//      The route is set to pedestrian mode
+        RoadManager roadManager = new MapQuestRoadManager("EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru");
+        roadManager.addRequestOption("routeType=pedestrian");
 
+//        RoadManager roadManager = new OSRMRoadManager(this); -- used MapQuestRoadManager instead - osmbonuspack said
+//
+        ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
+        waypoints.add(startPoint);
+//        GeoPoint endPoint = new GeoPoint(-27.961073, 153.383700);
+        waypoints.add(extraPoint);
 
-//      This is to add markers to PLACES OF INTEREST and CLUSTER MARKERS
+        Road road = roadManager.getRoad(waypoints);
 
-        NominatimPOIProvider poiProvider = new NominatimPOIProvider("Airport");
-        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "cinema", 50, 0.1);
+        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
 
-        FolderOverlay poiMarkers = new FolderOverlay();
-        map.getOverlays().add(poiMarkers);
+        map.getOverlays().add(roadOverlay);
 
-//        ContextCompat.getDrawable(getActivity(), R.drawable.marker_poi_default);
-
-//        Drawable poiIcon = getResources().getDrawable(R.drawable.marker_poi_default);
-        Drawable poiIcon = ContextCompat.getDrawable(getActivity(), R.drawable.marker_poi_default);
-        for (POI poi:pois){
-            Marker poiMarker = new Marker(map);
-            poiMarker.setTitle(poi.mType);
-            poiMarker.setSnippet(poi.mDescription);
-            poiMarker.setPosition(poi.mLocation);
-            poiMarker.setIcon(poiIcon);
-            if (poi.mThumbnail != null){
-                poiItem.setImage(new BitmapDrawable(poi.mThumbnail));
-            }
-            poiMarkers.add(poiMarker);
+//        Drawable nodeIcon = getResources().getDrawable(R.drawable.marker_node, null);
+//        Add a node icon to mipmap folder and use that for node markers
+        Drawable nodeIcon = getResources().getDrawable(R.mipmap.marker, null);
+        for (int i = 0; i < road.mNodes.size(); i++){
+            RoadNode node = road.mNodes.get(i);
+            Marker nodeMarker = new Marker(map);
+            nodeMarker.setPosition(node.mLocation);
+            nodeMarker.setIcon(nodeIcon);
+            nodeMarker.setTitle("Step " + i);
+            map.getOverlays().add(nodeMarker);
         }
+
+
+//      Mapquest API Key - EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru
+
 
         map.invalidate();
     }
