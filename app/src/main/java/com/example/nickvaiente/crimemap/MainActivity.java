@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
 
 //      Sets the marker coordinates
         GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
-        GeoPoint extraPoint = new GeoPoint(-27.961073, 153.383700);
+        GeoPoint extraPoint = new GeoPoint(-27.926252, 153.382916);
         GeoPoint testPoint[] = new GeoPoint[3];
 
 
@@ -136,6 +136,30 @@ public class MainActivity extends Activity {
             map.getOverlays().add(nodeMarker);
         }
 
+//      OpenStreetMaps Places Of Interest (POI) with Nominatim
+        NominatimPOIProvider poiProvider = new NominatimPOIProvider("");
+        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "cinema", 50, 0.1);
+
+        FolderOverlay poiMarkers = new FolderOverlay();
+        map.getOverlays().add(poiMarkers);
+
+
+//      Below sets the POI marker with the title, description etc. It also uses the shield from
+//      the CrimeMap logo as a marker.
+        Drawable poiIcon = getResources().getDrawable(R.mipmap.shield_marker, null);
+        for (POI poi:pois){
+            Marker poiMarker = new Marker(map);
+            poiMarker.setTitle(poi.mType);
+            poiMarker.setSnippet(poi.mDescription);
+            poiMarker.setPosition(poi.mLocation);
+            poiMarker.setIcon(poiIcon);
+            if (poi.mThumbnail != null){
+//                poiItem.setImage(new BitmapDrawable(poi.mThumbnail));
+//                poiMarker.setImage(new BitmapDrawable(R.mipmap.shield_marker, poi.mThumbnail));
+                poiMarker.setImage(getDrawable(R.mipmap.shield_marker));
+            }
+            poiMarkers.add(poiMarker);
+        }
 
         map.invalidate();
     }
