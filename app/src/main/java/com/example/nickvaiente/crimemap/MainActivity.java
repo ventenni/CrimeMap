@@ -101,25 +101,25 @@ public class MainActivity extends Activity {
         map.getOverlays().add(extraMarker);
 
 
-//      This adds an overlay to show the route
+//      This makes a call to Mapquest as stated in the osmbonuspack tutorial
+//      Mapquest supports changing routes so they are suited for bicycle or pedestrians
 //      The route is set to pedestrian mode
+//      Mapquest API Key - EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru
         RoadManager roadManager = new MapQuestRoadManager("EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru");
         roadManager.addRequestOption("routeType=pedestrian");
 
-//        RoadManager roadManager = new OSRMRoadManager(this); -- used MapQuestRoadManager instead - osmbonuspack said
-//
+
         ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
         waypoints.add(startPoint);
-//        GeoPoint endPoint = new GeoPoint(-27.961073, 153.383700);
         waypoints.add(extraPoint);
 
+//        Adds road overlay
         Road road = roadManager.getRoad(waypoints);
-
         Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
-
         map.getOverlays().add(roadOverlay);
 
-//        Drawable nodeIcon = getResources().getDrawable(R.drawable.marker_node, null);
+
+//        This adds the node icons to each new road for the route.
 //        Add a node icon to mipmap folder and use that for node markers
         Drawable nodeIcon = getResources().getDrawable(R.mipmap.marker, null);
         for (int i = 0; i < road.mNodes.size(); i++){
@@ -130,9 +130,6 @@ public class MainActivity extends Activity {
             nodeMarker.setTitle("Step " + i);
             map.getOverlays().add(nodeMarker);
         }
-
-
-//      Mapquest API Key - EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru
 
 
         map.invalidate();
