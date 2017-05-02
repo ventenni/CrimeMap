@@ -2,6 +2,7 @@ package com.example.nickvaiente.crimemap;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.bonuspack.location.NominatimPOIProvider;
 import org.osmdroid.bonuspack.location.POI;
 import org.osmdroid.bonuspack.routing.MapQuestRoadManager;
@@ -138,12 +140,15 @@ public class MainActivity extends Activity {
 
 //      OpenStreetMaps Places Of Interest (POI) with Nominatim
         NominatimPOIProvider poiProvider = new NominatimPOIProvider("");
-        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "cinema", 50, 0.1);
+        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "fuel", 50, 0.1);
 
-        FolderOverlay poiMarkers = new FolderOverlay();
+        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this);
         map.getOverlays().add(poiMarkers);
 
+        Drawable clusterIconD = getResources().getDrawable(R.drawable.green_cluster_logo, null);
+        Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
 
+        poiMarkers.setIcon(clusterIcon);
 //      Below sets the POI marker with the title, description etc. It also uses the shield from
 //      the CrimeMap logo as a marker.
         Drawable poiIcon = getResources().getDrawable(R.mipmap.shield_marker, null);
@@ -160,6 +165,11 @@ public class MainActivity extends Activity {
             }
             poiMarkers.add(poiMarker);
         }
+
+//        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this);
+
+//        Drawable clusterIconD = getResources().getDrawable(R.drawable.green_cluster_logo);
+
 
         map.invalidate();
     }
