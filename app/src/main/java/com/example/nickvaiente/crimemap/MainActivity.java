@@ -46,7 +46,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
-    @Override public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
 //      Disable Strict Mode
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -94,6 +95,7 @@ public class MainActivity extends Activity {
             //newMark.setPosition(testStart);
             newMark.setPosition(testPoint[i]);
             newMark.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            newMark.setTitle("Possible buried treasure");
             map.getOverlays().add(newMark);
         }
 
@@ -134,7 +136,7 @@ public class MainActivity extends Activity {
 //        This adds the node icons to each new road for the route.
 //        Add a node icon to mipmap folder and use that for node markers
         Drawable nodeIcon = getResources().getDrawable(R.mipmap.marker, null);
-        for (int i = 0; i < road.mNodes.size(); i++){
+        for (int i = 0; i < road.mNodes.size(); i++) {
             RoadNode node = road.mNodes.get(i);
             Marker nodeMarker = new Marker(map);
             nodeMarker.setPosition(node.mLocation);
@@ -156,19 +158,19 @@ public class MainActivity extends Activity {
         map.getOverlays().add(poiMarkers);
 
         Drawable clusterIconD = getResources().getDrawable(R.drawable.green_cluster_logo, null);
-        Bitmap clusterIcon = ((BitmapDrawable)clusterIconD).getBitmap();
+        Bitmap clusterIcon = ((BitmapDrawable) clusterIconD).getBitmap();
 
         poiMarkers.setIcon(clusterIcon);
 //      Below sets the POI marker with the title, description etc. It also uses the shield from
 //      the CrimeMap logo as a marker.
         Drawable poiIcon = getResources().getDrawable(R.mipmap.shield_marker, null);
-        for (POI poi:pois){
+        for (POI poi : pois) {
             Marker poiMarker = new Marker(map);
             poiMarker.setTitle(poi.mType);
             poiMarker.setSnippet(poi.mDescription);
             poiMarker.setPosition(poi.mLocation);
             poiMarker.setIcon(poiIcon);
-            if (poi.mThumbnail != null){
+            if (poi.mThumbnail != null) {
 //                poiItem.setImage(new BitmapDrawable(poi.mThumbnail));
 //                poiMarker.setImage(new BitmapDrawable(R.mipmap.shield_marker, poi.mThumbnail));
                 poiMarker.setImage(getDrawable(R.mipmap.shield_marker));
@@ -183,20 +185,23 @@ public class MainActivity extends Activity {
 
         map.invalidate();
 
+//      Code below is used to make a side menu.
+//      MaterialDrawer - Mike Penz - Github
         new DrawerBuilder().withActivity(this).build();
 
         // if you want to update the items at a later time it is recommended to keep it in a variable
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_home);
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_settings);
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.Compare);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.About);
+        Log.i("Tag", "error");
 
         // create the drawer and remember the `Drawer` result object
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
+
                 .addDrawerItems(
                         item1,
                         new DividerDrawerItem(),
-                        item2,
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings)
+                        item2
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -206,7 +211,7 @@ public class MainActivity extends Activity {
                     }
                 })
                 .build();
+
+
     }
-
-
 }
