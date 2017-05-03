@@ -11,9 +11,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
@@ -37,18 +47,18 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle savedInstanceState) {
+
 //      Disable Strict Mode
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         MapView map = (MapView) findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-
-
 
 //      Sets the marker coordinates
         GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
@@ -172,6 +182,30 @@ public class MainActivity extends Activity {
 
 
         map.invalidate();
+
+        new DrawerBuilder().withActivity(this).build();
+
+        // if you want to update the items at a later time it is recommended to keep it in a variable
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_item_home);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_item_settings);
+
+        // create the drawer and remember the `Drawer` result object
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings)
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        return true;
+                    }
+                })
+                .build();
     }
 
 
