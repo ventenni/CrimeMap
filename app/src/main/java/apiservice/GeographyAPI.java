@@ -1,8 +1,10 @@
 package apiservice;
 
+import android.util.Log;
+
 import org.springframework.web.client.RestTemplate;
 
-import entity.geography.Message;
+import entity.geography.Success;
 
 import static java.lang.String.format;
 
@@ -24,16 +26,19 @@ public class GeographyAPI {
         //Using this getForObject Method it should translate whatevers in the API to Objects that I've
         //created in the entity package.
         String url = format(NAME_URL, name, maxResults);
+        try {
+            //this line crashes my Android VM but try it on you machines and see if it works.
+            Success success = restTemplate.getForObject(url, Success.class);
+            Log.i("Message", success.getResultCount().toString());
 
-        //this line crashes my Android VM but try it on you machines and see if it works.
-        Message message = restTemplate.getForObject(url, Message.class);
-        System.out.println(message.getResultCount());
-
-        //Just another example for the getForObject Method but with location entered with lats and longs
-        url = format(LOCATION_URL, latitude, longitude, maxResults);
-        Message message2 = restTemplate.getForObject(url, Message.class);
-        System.out.println(message.getResultCount());
-
+            //Just another example for the getForObject Method but with location entered with lats and longs
+            url = format(LOCATION_URL, latitude, longitude, maxResults);
+            Success success2 = restTemplate.getForObject(url, Success.class);
+            Log.i("Message2", success2.getResultCount().toString());
+        } catch (Exception ex){
+            Log.i("Error", ex.getMessage());
+            ex.printStackTrace();
+        }
 //        OffenceAPI offenceAPI = new OffenceAPI();
 //        offenceAPI.offenceResults(name, maxResults);
     }
