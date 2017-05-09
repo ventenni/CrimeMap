@@ -18,7 +18,7 @@ import java.util.Map;
         "Result",
         "ResultCount"
 })
-public class Boundary {
+public class OffenceBoundary {
 
     @JsonProperty("Success")
     private Boolean success;

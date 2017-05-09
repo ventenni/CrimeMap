@@ -26,7 +26,7 @@ import java.util.Map;
         "Code",
         "QpsAreaId",
         "QpsAreaType",
-        "ParentId"
+        "ParentId",
 })
 public class Result {
 

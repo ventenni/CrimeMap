@@ -1,9 +1,7 @@
 package com.example.nickvaiente.crimemap;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +11,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
 
-import utils.RetrieveGeographyJSONTask;
+import utils.QpsApiAccess;
 import utils.RetrieveLocationJSONTask;
 
 import static java.lang.String.format;
@@ -66,6 +62,7 @@ public class MainActivity extends Activity {
                         String address = searchInput;
                         String url = format(ADDRESS_URL, address);
                         new RetrieveLocationJSONTask().execute(url);
+                        new QpsApiAccess().execute(searchInput);
                     } catch(Exception e) {
                         e.getMessage();
                     }
@@ -84,5 +81,6 @@ public class MainActivity extends Activity {
 //        String url3 = format(OFFENCE_URL, name, maxResults);
 //
 //        new RetrieveGeographyJSONTask().execute(url, url2, url3);
+
     }
 }

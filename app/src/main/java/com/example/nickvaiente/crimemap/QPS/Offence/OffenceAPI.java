@@ -1,8 +1,8 @@
-package apiservice;
+package com.example.nickvaiente.crimemap.QPS.Offence;
 
 import org.springframework.web.client.RestTemplate;
 
-import entity.offence.Boundary;
+import entity.offence.OffenceBoundary;
 
 import static java.lang.String.format;
 
@@ -16,7 +16,7 @@ public class OffenceAPI {
 
     public void offenceResults(String name, int maxResults){
         String url = format(OFFENCE_URL, name, maxResults);
-        Boundary boundary = restTemplate.getForObject(url, Boundary.class);
-        System.out.println(boundary.getResultCount());
+        OffenceBoundary offenceBoundary = restTemplate.getForObject(url, OffenceBoundary.class);
+        System.out.println(offenceBoundary.getResultCount());
     }
 }
