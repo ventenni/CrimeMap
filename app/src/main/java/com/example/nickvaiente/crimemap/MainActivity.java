@@ -1,8 +1,12 @@
 package com.example.nickvaiente.crimemap;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -13,6 +17,7 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.web.client.RestTemplate;
 
 import utils.RetrieveGeographyJSONTask;
+import utils.RetrieveLocationJSONTask;
 
 import static java.lang.String.format;
 
@@ -21,6 +26,10 @@ public class MainActivity extends Activity {
     private static final String NAME_URL = "https://data.police.qld.gov.au/api/boundary?name=%s&returngeometry=true&maxresults=%s";
     private static final String LOCATION_URL = "https://data.police.qld.gov.au/api/boundary?latitude=%s&longitude=%s&maxresults=%s";
     private static final String OFFENCE_URL = "https://data.police.qld.gov.au/api/boundary?name=%s&returngeometry=true&maxresults=%s";
+    private static final String ADDRESS_URL = "http://nominatim.openstreetmap.org/search/%s?format=json&addressdetails=1&limit=1&polygon_svg=1";
+
+    private EditText searchBox = null;
+    private Button searchButton = null;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +51,38 @@ public class MainActivity extends Activity {
 
         map.invalidate();
 
-        String name = "Rock";
-        Double latitude = -27.5;
-        Double longitude = 153.0;
-        int maxResults = 1;
-        Log.i("Message","Hello");
-        String url = format(NAME_URL, name, maxResults);
-        String url2 = format(LOCATION_URL, latitude, longitude, maxResults);
-        String url3 = format(OFFENCE_URL, name, maxResults);
+        //LOCATION SEARCH FUNCTION
+        searchBox = (EditText) findViewById(R.id.searchBox);
+        searchButton = (Button) findViewById(R.id.searchButton);
 
-        new RetrieveGeographyJSONTask().execute(url, url2, url3);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                //Read location from search box
+                String searchInput = searchBox.getText().toString().trim();
+                if (searchInput.length() > 0) {
+                    try {
+                        //Search OSM for matching locations and return a maximum result of 1
+                        String address = searchInput;
+                        String url = format(ADDRESS_URL, address);
+                        new RetrieveLocationJSONTask().execute(url);
+                    } catch(Exception e) {
+                        e.getMessage();
+                    }
+                }
+            }
+        });
+
+
+//        String name = "Rock";
+//        Double latitude = -27.5;
+//        Double longitude = 153.0;
+//        int maxResults = 1;
+//        Log.i("Message","Hello");
+//        String url = format(NAME_URL, name, maxResults);
+//        String url2 = format(LOCATION_URL, latitude, longitude, maxResults);
+//        String url3 = format(OFFENCE_URL, name, maxResults);
+//
+//        new RetrieveGeographyJSONTask().execute(url, url2, url3);
     }
 }
