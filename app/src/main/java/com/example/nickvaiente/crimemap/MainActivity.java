@@ -204,13 +204,13 @@ public class MainActivity extends Activity {
                                 search.setVisibility(View.GONE);
                             }
                         } else if (position == 3) { // If position is "About"
-//                            Intent myIntent = new Intent(view.getContext(), FullscreenActivity.class);
-//                            startActivityForResult(myIntent, 0);
+                            Intent myIntent = new Intent(view.getContext(), AboutLayoutActivity.class);
+                            startActivityForResult(myIntent, 0);
                             Log.i("marked", "about");
                         } else if (position == 4) { // Else the button pressed was "Help"
-//                            Intent myIntent = new Intent(view.getContext(), HelpActivity.class);
+                            Intent myIntent = new Intent(view.getContext(), HelpLayoutActivity.class);
                             Log.i("marker", "HELP");
-//                            startActivityForResult(myIntent, 0);
+                            startActivityForResult(myIntent, 0);
                             Log.i("marker", "HELP");
                         } else {
                             Log.i("Marker", "Nothing");

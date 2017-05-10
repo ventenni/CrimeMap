@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Side Menu Titles-->
     <string name="Home"> Home </string>
-    <string name="Compare"> Compare </string>
+    <string name="Route"> Safe Route </string>
     <string name="About"> About </string>
+    <string name="Help"> Help </string>
 
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="about_content"> About Page </string>
+    <string name="help_content"> Help Page </string>
+
+    <!--Crime Map Logo String-->
+    <string name="crime_map_logo">Crime Map Logo</string>
 </resources>
