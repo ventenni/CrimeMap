@@ -1,15 +1,10 @@
-package utils;
+package com.example.nickvaiente.crimemap.OSM;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.apache.http.protocol.HTTP;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.Array;
-
-import entity.location_search.LocationInfo;
 
 /**
  * Created by Tae's Puter on 7/05/2017.
@@ -22,19 +17,24 @@ public class RetrieveLocationJSONTask extends AsyncTask<String,Void,Void>
     @Override
     protected Void doInBackground(String... params) {
         RestTemplate restTemplate = new RestTemplate(true);
+        LocationInfo[] jsonObject;
 
         try {
-            //Retrieve jason object from http request
-            Log.i("Print", "testing");
+            //Retrieve json object from http request
+            Log.i("Print", "testing RetrieveLocationJsonTask1");
 
             //get json object
-            LocationInfo[] jasonObject = restTemplate.getForObject(params[0], LocationInfo[].class);
+            jsonObject = restTemplate.getForObject(params[0], LocationInfo[].class);
 
             //Retrieve latitude
-            Log.i("Print", "lat: " + jasonObject[0].getLat());
+//            Log.i("Print", "lat: " + jsonObject[0].getLat());
 
             //Retrieve longitude
-//            Log.i("Print", "lon: " + jasonObject.getLon());
+//            Log.i("Print", "lon: " + jsonObject.getLon());
+
+            //Store the json object in the OpenStreetMap class
+            OpenStreetMap.getInstance().setResult(jsonObject[0]);
+
 
         } catch(Exception e) {
             Log.e("Print", e.getMessage());

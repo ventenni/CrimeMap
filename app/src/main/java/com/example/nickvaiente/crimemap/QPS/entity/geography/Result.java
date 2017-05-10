@@ -1,5 +1,5 @@
 
-package entity.geography;
+package com.example.nickvaiente.crimemap.QPS.entity.geography;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;

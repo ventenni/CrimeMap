@@ -4,10 +4,9 @@ import android.util.Log;
 
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.HostnameVerifier;
-
-import entity.geography.Success;
-import entity.offence.OffenceBoundary;
+import com.example.nickvaiente.crimemap.QPS.QueenslandPoliceService;
+import com.example.nickvaiente.crimemap.QPS.entity.geography.Success;
+import com.example.nickvaiente.crimemap.QPS.entity.offence.OffenceBoundary;
 
 import static java.lang.String.format;
 
@@ -23,24 +22,19 @@ public class RetrieveGeographyJSONTask
 
     private RestTemplate restTemplate;
 
-    public Success doInBackground(String... params) {
+    public void doInBackground(String... params) {
         restTemplate = new RestTemplate(true);
         try {
             //this line crashes my Android VM but try it on you machines and see if it works.
             Success success = restTemplate.getForObject(params[0], Success.class);
-            Log.i("Result", success.getResult().get(0).getLGA());
-
+            QueenslandPoliceService.getInstance().setSuccess(success);
             //OffenceBoundary class example
-            OffenceBoundary offenceBoundary = restTemplate.getForObject(OFFENCE_URL, OffenceBoundary.class);
-            Log.i("OffenceBoundary", offenceBoundary.getResult().get(0).getOffenceInfo().get(0).getPostcode());
-            return success;
-        } catch(
-                Exception ex)
+//            OffenceBoundary offenceBoundary = restTemplate.getForObject(OFFENCE_URL, OffenceBoundary.class);
+//            Log.i("OffenceBoundary", offenceBoundary.getResult().get(0).getOffenceInfo().get(0).getPostcode());
 
-        {
+        } catch(Exception ex) {
             Log.e("Error", ex.getMessage());
             ex.printStackTrace();
         }
-        return null;
     }
 }

@@ -2,7 +2,7 @@ package com.example.nickvaiente.crimemap.QPS.Offence;
 
 import org.springframework.web.client.RestTemplate;
 
-import entity.offence.OffenceBoundary;
+import com.example.nickvaiente.crimemap.QPS.entity.offence.OffenceBoundary;
 
 import static java.lang.String.format;
 

@@ -1,4 +1,4 @@
-package entity.location_search;
+package com.example.nickvaiente.crimemap.OSM;
 
 /**
  * Created by Tae's Puter on 7/05/2017.

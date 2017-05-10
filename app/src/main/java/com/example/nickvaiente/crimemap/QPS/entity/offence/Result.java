@@ -1,4 +1,4 @@
-package entity.offence;
+package com.example.nickvaiente.crimemap.QPS.entity.offence;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;

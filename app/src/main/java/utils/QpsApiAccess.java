@@ -3,6 +3,7 @@ package utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.nickvaiente.crimemap.OSM.OpenStreetMap;
 import com.example.nickvaiente.crimemap.QPS.Geography.RetrieveGeographyJSONTask;
 import com.example.nickvaiente.crimemap.QPS.Offence.RetrieveOffenceJSONTask;
 
@@ -10,8 +11,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import entity.geography.Success;
-import entity.offence.OffenceBoundary;
+import com.example.nickvaiente.crimemap.QPS.QueenslandPoliceService;
+import com.example.nickvaiente.crimemap.QPS.entity.geography.Success;
+import com.example.nickvaiente.crimemap.QPS.entity.offence.OffenceBoundary;
 
 import static java.lang.String.format;
 
@@ -28,50 +30,59 @@ public class QpsApiAccess extends AsyncTask<String,Void,Void>
     String name = "Rock";
     Double latitude = -27.5;
     Double longitude = 153.0;
-    int maxResults = 1;
+    int maxResults = 3;
 
     @Override
     protected Void doInBackground(String... params) {
-        String url = format(NAME_URL, params[0], maxResults);
-//        String url2 = format(LOCATION_URL, latitude, longitude, maxResults);
-        RetrieveGeographyJSONTask retrieveGeographyJSONTask = new RetrieveGeographyJSONTask();
-        Success success = retrieveGeographyJSONTask.doInBackground(url);
-//        Success success = new Success();
-//        List<Result> list= new ArrayList<>();
-//        Result result = new Result();
-//        result.setQldPostcodeId(6989);
-//        list.add(result);
-//        success.setResult(list);
+        String url = format(LOCATION_URL, params[0], params[1], maxResults);
+//        String url = format(NAME_URL, params[0], maxResults);
 
-        String boundaryList = getBoundaryList(success);
+        RetrieveGeographyJSONTask retrieveGeographyJSONTask = new RetrieveGeographyJSONTask();
+        retrieveGeographyJSONTask.doInBackground(url);
+
+        Success successResults = QueenslandPoliceService.getInstance().getSuccess();
+        String boundaryList = getBoundaryList(successResults);
         long endDate = System.currentTimeMillis() / 1000L;
-        long startDate = getStartDate(-28);
-        String filters = "1";
+//        long startDate = getStartDate(-28);
+        long startDate = 1336614698;
+        String filters = "1,8,14";//17,21,27,28,29,30";//,35,39,45,47,51,52,54,55";
 
         String offenceUrl = format(OFFENCE_URL, boundaryList, startDate, endDate, filters);
 
         RetrieveOffenceJSONTask retrieveOffenceJSONTask = new RetrieveOffenceJSONTask();
-        OffenceBoundary offenceBoundary = retrieveOffenceJSONTask.doInBackground(offenceUrl);
-
-        Log.i("OffenceBoundary", offenceBoundary.getResult().get(0).getOffenceInfo().get(0).getOffenceCount().toString());
+        retrieveOffenceJSONTask.doInBackground(offenceUrl);
+        OffenceBoundary offenceBoundary = QueenslandPoliceService.getInstance().getOffenceBoundary();
+        if(offenceBoundary != null){
+            Log.i("OffenceCount", offenceBoundary.getResultCount().toString());
+        } else {
+            Log.i("OffenceBoundary", "No crimes found");
+        }
         return null;
     }
 
     private String getBoundaryList(Success success) {
-        List<Integer> ids = new ArrayList<>();
-        ids.add(success.getResult().get(0).getQldSuburbId());
-        ids.add(success.getResult().get(0).getQldPostcodeId());
-        ids.add(success.getResult().get(0).getLocalGovtAreaId());
-        ids.add(success.getResult().get(0).getQpsAreaId());
-        String result = "";
-        for (int i = 0; i < 4; i++){
-            if(ids.get(i) != null){
-                int id = i+1;
-                result = result + id + "_" + ids.get(i)+",";
-            }
+//        List<Integer> ids = new ArrayList<>();
+
+        if(success.getResult().size() != 0){
+//            ids.add(success.getResult().get(1).getQldSuburbId());
+//            ids.add(success.getResult().get(0).getQldPostcodeId());
+////            ids.add(null);
+//            ids.add(success.getResult().get(2).getLocalGovtAreaId());
+////            ids.add(success.getResult().get(0).getQpsAreaId());
+//            ids.add(null);
+            String result = "1_" + success.getResult().get(1).getQldSuburbId();
+//            for (int i = 0; i < 4; i++){
+//                if(ids.get(i) != null){
+//                    int id = i+1;
+//                    result = result + id + "_" + ids.get(i)+",";
+//                }
+//            }
+//            result = result.substring(0,result.length()-1);
+            return result;
+        } else {
+            Log.e("Geography", "Success is empty");
+            return "";
         }
-        result = result.substring(0,result.length()-1);
-        return result;
     }
 
     public long getStartDate(int days)

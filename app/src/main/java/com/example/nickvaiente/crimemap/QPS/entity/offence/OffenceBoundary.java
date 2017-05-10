@@ -1,29 +1,25 @@
-
-package entity.geography;
+package com.example.nickvaiente.crimemap.QPS.entity.offence;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonPropertyOrder({
-    "Success",
-    "Message",
-    "Result",
-    "ResultCount"
+        "Success",
+        "Message",
+        "Result",
+        "ResultCount"
 })
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Success {
-    @JsonIgnoreProperties(ignoreUnknown = true)
+public class OffenceBoundary {
+
     @JsonProperty("Success")
     private Boolean success;
     @JsonProperty("Message")
@@ -84,5 +80,4 @@ public class Success {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-
 }

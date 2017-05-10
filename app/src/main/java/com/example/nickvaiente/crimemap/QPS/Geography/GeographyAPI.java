@@ -4,7 +4,7 @@ import android.util.Log;
 
 import org.springframework.web.client.RestTemplate;
 
-import entity.geography.Success;
+import com.example.nickvaiente.crimemap.QPS.entity.geography.Success;
 
 import static java.lang.String.format;
 
@@ -24,7 +24,7 @@ public class GeographyAPI {
 
         //uses the Name_Url constant declared above and adds the variables I stated just above too
         //Using this getForObject Method it should translate whatevers in the API to Objects that I've
-        //created in the entity package.
+        //created in the com.example.nickvaiente.crimemap.QPS.entity package.
         String url = format(NAME_URL, name, maxResults);
         try {
             //this line crashes my Android VM but try it on you machines and see if it works.

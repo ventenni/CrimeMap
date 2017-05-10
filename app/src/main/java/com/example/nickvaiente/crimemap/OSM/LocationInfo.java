@@ -1,4 +1,4 @@
-package entity.location_search;
+package com.example.nickvaiente.crimemap.OSM;
 
 /**
  * Created by Tae's Puter on 7/05/2017.
@@ -9,6 +9,8 @@ package entity.location_search;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
+
+        import com.example.nickvaiente.crimemap.OSM.Address;
         import com.fasterxml.jackson.annotation.JsonAnyGetter;
         import com.fasterxml.jackson.annotation.JsonAnySetter;
         import com.fasterxml.jackson.annotation.JsonIgnore;
