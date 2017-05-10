@@ -1,10 +1,14 @@
 package com.example.nickvaiente.crimemap;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -48,6 +52,8 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
+    final String mapquestApi = "EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru"; // MAKE PRIVATE AS WELL?
+    MapView map;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,100 +65,23 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final MapView map = (MapView) findViewById(R.id.map);
+        map = (MapView) findViewById(R.id.map);
         newMap(map);
-        addingWaypoints(map);
-
-        ////      Code below is used to make a side menu.
-////      MaterialDrawer - Mike Penz - Github
-
-        new DrawerBuilder().withActivity(this).build();
-//
-
-
-//        safest route
-//        compare
-//        about
-//        help
-
-//        // if you want to update the items at a later time it is recommended to keep it in a variable
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.Home);
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.Compare);
-        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(3).withName(R.string.About);
-//        Log.i("Tag", "error");
-//
-//        // create the drawer and remember the `Drawer` result object
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .addDrawerItems(
-                        item1,
-                        new DividerDrawerItem(),
-                        item2,
-                        item3
-                )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    This function is activated when 'Compare' is pressed in the side menu.
-//                    It will hide the search field, and show the route fields and button.
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        Log.i("marker-View", view.toString());
-                        Log.i("marker-position", String.valueOf(position));
-                        Log.i("marker-drawerItem", drawerItem.toString());
-
-                        EditText start = (EditText) MainActivity.this.findViewById(R.id.start);
-                        EditText finish = (EditText) MainActivity.this.findViewById(R.id.end);
-                        EditText search = (EditText) MainActivity.this.findViewById(R.id.search);
-                        Button route_button = (Button) MainActivity.this.findViewById(R.id.route_button);
-
-//                        If 'Home' is pressed, set the text fields back to normal
-//                        and reload the map at the original point.
-                        if (position == 0) {
-                            if (start.getVisibility() == View.VISIBLE) {
-                                start.setVisibility(View.GONE);
-                                finish.setVisibility(View.GONE);
-                                route_button.setVisibility(View.GONE);
-                                search.setVisibility(View.VISIBLE);
-                                newMap(map);
-
-                            }
-                        }
-                        else if (position == 2) {
-                            if (start.getVisibility() == View.VISIBLE) {
-                                start.setVisibility(View.GONE);
-                                finish.setVisibility(View.GONE);
-                                route_button.setVisibility(View.GONE);
-                                search.setVisibility(View.VISIBLE);
-                            } else {
-                                start.setVisibility(View.VISIBLE);
-                                finish.setVisibility(View.VISIBLE);
-                                route_button.setVisibility(View.VISIBLE);
-                                search.setVisibility(View.GONE);
-                            }
-                        }
-                        else if (position == 3){
-                            Log.i("marked", "about");
-                        } else{
-                            Log.i("else", "else");
-                        }
-                        return true;
-                    }
-                })
-                .build();
-
-
-
-//        Button route_button = (Button) findViewById();
+        addingWaypoints(map, mapquestApi);
+        createDrawer();
 
     }
-    void newMap(MapView map){
-//        MapView map = (MapView) findViewById(R.id.map);
+
+//    This function sets the initial map with the placeholder location
+    void newMap(MapView map) {
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
+        // Placeholder location - Griffith Library
         GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
 
-        //      Specifies where the map will load
+        // Specifies where the map will load
         IMapController mapController = map.getController();
         mapController.setZoom(17);
         mapController.setCenter(startPoint);
@@ -167,14 +96,18 @@ public class MainActivity extends Activity {
         map.invalidate();
     }
 
-    void addingWaypoints(MapView map) {
+//    this function creates the Route using place holder locations
+    void addingWaypoints(MapView map, String mapquestApi) {
+
         //      This makes a call to Mapquest as stated in the osmbonuspack tutorial
         //      Mapquest supports changing routes so they are suited for bicycle or pedestrians
         //      The route is set to pedestrian mode
         //      Mapquest API Key - EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru
-        RoadManager roadManager = new MapQuestRoadManager("EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru");
+
+        RoadManager roadManager = new MapQuestRoadManager(mapquestApi);
         roadManager.addRequestOption("routeType=pedestrian");
 
+        //      Placeholder route locations - Griffith Library to Harbour Town
         GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
         GeoPoint extraPoint = new GeoPoint(-27.926252, 153.382916);
 
@@ -189,6 +122,7 @@ public class MainActivity extends Activity {
 
         map.invalidate();
 
+    }
 
 //        This adds the node icons to each new road for the route.
 //        Add a node icon to mipmap folder and use that for node markers
@@ -207,27 +141,88 @@ public class MainActivity extends Activity {
 //            map.getOverlays().add(nodeMarker);
 //        }
 
-//        map.invalidate();
+    //        map.invalidate();
+    //// Code below is used to make a side menu.
+    //// MaterialDrawer - Mike Penz - Github
+    void createDrawer() {
+        new DrawerBuilder().withActivity(this).build();
+
+        // if you want to update the items at a later time it is recommended to keep it in a variable
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.Home);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.Route);
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withIdentifier(3).withName(R.string.About);
+        SecondaryDrawerItem item4 = new SecondaryDrawerItem().withIdentifier(4).withName(R.string.Help);
+
+
+        // create the drawer and remember the `Drawer` result object
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .addDrawerItems(
+                        item1,
+                        new DividerDrawerItem(),
+                        item2,
+                        item3,
+                        item4
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+//              This function is activated when 'Compare' is pressed in the side menu.
+//              It will hide the search field, and show the route fields and button.
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        Log.i("marker-View", view.toString());
+                        Log.i("marker-position", String.valueOf(position));
+                        Log.i("marker-drawerItem", drawerItem.toString());
+
+                        EditText start = (EditText) MainActivity.this.findViewById(R.id.start);
+                        EditText finish = (EditText) MainActivity.this.findViewById(R.id.end);
+                        EditText search = (EditText) MainActivity.this.findViewById(R.id.search);
+                        Button route_button = (Button) MainActivity.this.findViewById(R.id.route_button);
+
+//              If 'Home' is pressed, set the text fields back to normal
+//              and reload the map at the original point.
+                        if (position == 0) { // If position is "Home"
+                            if (start.getVisibility() == View.VISIBLE) {
+                                start.setVisibility(View.GONE);
+                                finish.setVisibility(View.GONE);
+                                route_button.setVisibility(View.GONE);
+                                search.setVisibility(View.VISIBLE);
+                                newMap(map);
+
+                            }
+                        } else if (position == 2) { // if position is "safest route"
+//                            Following If/else statements determine whether the text fields are
+//                            visible or not and switches them on/off.
+                            if (start.getVisibility() == View.VISIBLE) {
+                                start.setVisibility(View.GONE);
+                                finish.setVisibility(View.GONE);
+                                route_button.setVisibility(View.GONE);
+                                search.setVisibility(View.VISIBLE);
+                            } else {
+                                start.setVisibility(View.VISIBLE);
+                                finish.setVisibility(View.VISIBLE);
+                                route_button.setVisibility(View.VISIBLE);
+                                search.setVisibility(View.GONE);
+                            }
+                        } else if (position == 3) { // If position is "About"
+//                            Intent myIntent = new Intent(view.getContext(), FullscreenActivity.class);
+//                            startActivityForResult(myIntent, 0);
+                            Log.i("marked", "about");
+                        } else if (position == 4) { // Else the button pressed was "Help"
+//                            Intent myIntent = new Intent(view.getContext(), HelpActivity.class);
+                            Log.i("marker", "HELP");
+//                            startActivityForResult(myIntent, 0);
+                            Log.i("marker", "HELP");
+                        } else {
+                            Log.i("Marker", "Nothing");
+                        }
+                        return true;
+                    }
+                })
+                .build();
     }
+}
 
 
-//    FUNCTIONS MADE - START ---------------------------------------------
-
-//        MapView map = (MapView) findViewById(R.id.map);
-//        map.setTileSource(TileSourceFactory.MAPNIK);
-//        map.setBuiltInZoomControls(true);
-//        map.setMultiTouchControls(true);
-
-//      Sets the marker coordinates
-//        GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
-//        GeoPoint extraPoint = new GeoPoint(-27.926252, 153.382916);
-//        GeoPoint testPoint[] = new GeoPoint[3];
-
-
-//      Specifies where the map will load
-//        IMapController mapController = map.getController();
-//        mapController.setZoom(17);
-//        mapController.setCenter(startPoint);
 
 // TESTING MULTIPLE MARKERS -------------------- WILL EVENTUALLY DELETE
 //        double[] lat = new double[3];
@@ -272,23 +267,6 @@ public class MainActivity extends Activity {
 //        map.getOverlays().add(extraMarker);
 
 
-////      This makes a call to Mapquest as stated in the osmbonuspack tutorial
-////      Mapquest supports changing routes so they are suited for bicycle or pedestrians
-////      The route is set to pedestrian mode
-////      Mapquest API Key - EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru
-//        RoadManager roadManager = new MapQuestRoadManager("EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru");
-//        roadManager.addRequestOption("routeType=pedestrian");
-//
-//
-//        ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
-//        waypoints.add(startPoint);
-//        waypoints.add(extraPoint);
-//
-////        Adds road overlay
-//        Road road = roadManager.getRoad(waypoints);
-//        Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
-//        map.getOverlays().add(roadOverlay);
-//
 //
 ////        This adds the node icons to each new road for the route.
 ////        Add a node icon to mipmap folder and use that for node markers
@@ -349,41 +327,3 @@ public class MainActivity extends Activity {
 //
 //
 //        map.invalidate();
-//
-//////      Code below is used to make a side menu.
-//////      MaterialDrawer - Mike Penz - Github
-//
-//        new DrawerBuilder().withActivity(this).build();
-////
-////        // if you want to update the items at a later time it is recommended to keep it in a variable
-//        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.Compare);
-//        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.About);
-////        Log.i("Tag", "error");
-////
-////        // create the drawer and remember the `Drawer` result object
-//        Drawer result = new DrawerBuilder()
-//                .withActivity(this)
-//
-//                .addDrawerItems(
-//                        item1,
-//                        new DividerDrawerItem(),
-//                        item2
-//                )
-//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    @Override
-//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        // do something with the clicked item :D
-//                        return true;
-//                    }
-//                })
-//                .build();
-
-
-    }
-//}
-
-
-
-
-//   Compiling all code into functions to tidy it up.
-//   Up to the routes from A to B
