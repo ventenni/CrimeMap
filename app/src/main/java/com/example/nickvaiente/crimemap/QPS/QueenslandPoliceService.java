@@ -12,6 +12,8 @@ import com.example.nickvaiente.crimemap.QPS.entity.offence.OffenceBoundary;
 import com.example.nickvaiente.crimemap.R;
 
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import utils.QpsApiAccess;
 
@@ -24,12 +26,13 @@ import static java.lang.String.format;
 public class QueenslandPoliceService{
     private static QueenslandPoliceService instance = new QueenslandPoliceService();
     private static final String LOCATION_URL = "https://data.police.qld.gov.au/api/boundary?latitude=%s&longitude=%s&maxresults=%s";
-    private Success success = null;
-    private OffenceBoundary offenceBoundary = null;
+    private Success success;
+    private OffenceBoundary offenceBoundary;
 
 
     public QueenslandPoliceService() {
-
+        this.success = null;
+        this.offenceBoundary = null;
     }
 
     public static QueenslandPoliceService getInstance() {
@@ -59,6 +62,23 @@ public class QueenslandPoliceService{
 
     public void setOffenceBoundary(OffenceBoundary offenceBoundary) {
         this.offenceBoundary = offenceBoundary;
+    }
+
+    public double getOffenceCoordinates(String geometryWKT, int index){
+        // Every even index is a longitude
+        // Every odd index is a latitude
+        String polygon = geometryWKT;
+        Pattern latNlon = Pattern.compile("(-?)[0-9]*\\.[0-9]*");
+        Matcher match = latNlon.matcher(polygon);
+        String coordinate = "";
+        // Increments index position to find Lat and Long
+        for(int i = 0; i <= index; i++) {
+            match.find();
+        }
+            coordinate = match.group();
+            Log.d("Print matchLat", coordinate);
+
+        return Double.parseDouble(coordinate);
     }
 }
 
