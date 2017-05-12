@@ -24,12 +24,11 @@ import static java.lang.String.format;
 public class QpsApiAccess extends AsyncTask<String,Void,Void>
 {
     private static final String NAME_URL = "https://data.police.qld.gov.au/api/boundary?name=%s&returngeometry=true&maxresults=%s";
+    // API to obtain the boundary ID from Latitude/Longitude
     private static final String LOCATION_URL = "https://data.police.qld.gov.au/api/boundary?latitude=%s&longitude=%s&maxresults=%s";
+    // API to obtain offence info from suburb ID
     public static final String OFFENCE_URL = "https://data.police.qld.gov.au/api/qpsmeshblock?boundarylist=%s&startdate=%s&enddate=%s&offences=%s";
 
-    String name = "Rock";
-    Double latitude = -27.5;
-    Double longitude = 153.0;
     int maxResults = 3;
 
     @Override
@@ -44,13 +43,15 @@ public class QpsApiAccess extends AsyncTask<String,Void,Void>
         String boundaryList = getBoundaryList(successResults);
         long endDate = System.currentTimeMillis() / 1000L;
 //        long startDate = getStartDate(-28);
-        long startDate = 1336614698;
+        long startDate = 1336614698; //5 years ago??
         String filters = "1,8,14";//17,21,27,28,29,30";//,35,39,45,47,51,52,54,55";
 
         String offenceUrl = format(OFFENCE_URL, boundaryList, startDate, endDate, filters);
 
         RetrieveOffenceJSONTask retrieveOffenceJSONTask = new RetrieveOffenceJSONTask();
+        //Gets success results - including polygon boundary for an offence
         retrieveOffenceJSONTask.doInBackground(offenceUrl);
+
         OffenceBoundary offenceBoundary = QueenslandPoliceService.getInstance().getOffenceBoundary();
         if(offenceBoundary != null){
             Log.i("OffenceCount", offenceBoundary.getResultCount().toString());
