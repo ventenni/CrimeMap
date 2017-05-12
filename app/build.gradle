@@ -33,5 +33,6 @@ dependencies {
     compile 'org.osmdroid:osmdroid-android:5.6.4'
     compile 'com.github.MKergall:osmbonuspack:6.3'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.google.android.gms:play-services-location:7.0.0'
     testCompile 'junit:junit:4.12'
 }

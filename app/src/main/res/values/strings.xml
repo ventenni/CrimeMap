@@ -7,7 +7,8 @@
     <string name="Help"> Help </string>
 
 
-    <string name="about_content"> About Page </string>
+    <string name="about_content"> CrimeMap description and
+        why/where it was created. </string>
     <string name="help_content"> Help Page </string>
 
     <!--Crime Map Logo String-->

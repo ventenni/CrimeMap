@@ -25,6 +25,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -54,6 +56,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
     final String mapquestApi = "EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru"; // MAKE PRIVATE AS WELL?
     MapView map;
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        get_location();
         map = (MapView) findViewById(R.id.map);
         newMap(map);
         addingWaypoints(map, mapquestApi);
@@ -81,16 +85,62 @@ public class MainActivity extends Activity {
         // Placeholder location - Griffith Library
         GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
 
+        GeoPoint point1 = new GeoPoint(-27.961808, 153.385341);
+        GeoPoint point2 = new GeoPoint(-27.962350, 153.385341);
+        GeoPoint point3 = new GeoPoint(-27.961808, 153.386478);
+        GeoPoint point4 = new GeoPoint(-27.962350, 153.386478);
+        GeoPoint point6 = new GeoPoint(-27.961109, 153.388345);
+
+
+
+        double diflat = (-27.962350 + -27.961808 + -27.961808 + -27.962350 + -27.961109) / 5; // 1 - 2
+        double diflong = (153.386478 + 153.385341 + 153.385341 + 153.386478 + 153.388345) / 5; // 3 - 2
+
+        GeoPoint point5 = new GeoPoint(diflat, diflong);
+
+        Marker startMarker5 = new Marker(map);
+        startMarker5.setTitle("Start point6");
+        startMarker5.setPosition(point5);
+        startMarker5.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(startMarker5);
+
+        Marker startMarker6 = new Marker(map);
+        startMarker6.setTitle("Start pointfewwe");
+        startMarker6.setPosition(point6);
+        startMarker6.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(startMarker6);
+
         // Specifies where the map will load
         IMapController mapController = map.getController();
         mapController.setZoom(17);
-        mapController.setCenter(startPoint);
+        mapController.setCenter(point5);
 
-        Marker startMarker = new Marker(map);
-        startMarker.setTitle("Start point");
-        startMarker.setPosition(startPoint);
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMarker);
+        Marker startMarker1 = new Marker(map);
+        startMarker1.setTitle("Start point1");
+        startMarker1.setPosition(point1);
+        startMarker1.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(startMarker1);
+
+
+        Marker startMarker2 = new Marker(map);
+        startMarker2.setTitle("Start point2");
+        startMarker2.setPosition(point2);
+        startMarker2.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(startMarker2);
+
+        Marker startMarker3 = new Marker(map);
+        startMarker3.setTitle("Start point3");
+        startMarker3.setPosition(point3);
+        startMarker3.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(startMarker3);
+
+
+        Marker startMarker4 = new Marker(map);
+        startMarker4.setTitle("Start point4");
+        startMarker4.setPosition(point4);
+        startMarker4.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(startMarker4);
+
 
 
         map.invalidate();
@@ -220,6 +270,20 @@ public class MainActivity extends Activity {
                 })
                 .build();
     }
+
+// void get_location() {
+//     if (mGoogleApiClient == null) {
+//         mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                 .addConnectionCallbacks(this)
+//                 .addOnConnectionFailedListener(this)
+//                 .addApi(LocationServices.API)
+//                 .build();
+//     }
+//     if (mGoogleApiClient != null) {
+//         mGoogleApiClient.connect();
+//     }
+// }
+
 }
 
 
