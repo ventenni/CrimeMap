@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -54,8 +55,14 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
+    // Placeholder location - Griffith Library
+    final GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
+
     final String mapquestApi = "EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru"; // MAKE PRIVATE AS WELL?
+
     MapView map;
+
+    public static Context context;
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -70,84 +77,38 @@ public class MainActivity extends Activity {
 
 //        get_location();
         map = (MapView) findViewById(R.id.map);
-        newMap(map);
-        addingWaypoints(map, mapquestApi);
+        newMap(map, startPoint);
+        addMarkers(map);
+        addingWaypoints(map, mapquestApi, startPoint);
         createDrawer();
+        MainActivity.context = getApplicationContext();
 
     }
 
 //    This function sets the initial map with the placeholder location
-    void newMap(MapView map) {
+    void newMap(MapView map, GeoPoint startpoint) {
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
-        // Placeholder location - Griffith Library
-        GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
-
-        GeoPoint point1 = new GeoPoint(-27.961808, 153.385341);
-        GeoPoint point2 = new GeoPoint(-27.962350, 153.385341);
-        GeoPoint point3 = new GeoPoint(-27.961808, 153.386478);
-        GeoPoint point4 = new GeoPoint(-27.962350, 153.386478);
-        GeoPoint point6 = new GeoPoint(-27.961109, 153.388345);
-
-
-
-        double diflat = (-27.962350 + -27.961808 + -27.961808 + -27.962350 + -27.961109) / 5; // 1 - 2
-        double diflong = (153.386478 + 153.385341 + 153.385341 + 153.386478 + 153.388345) / 5; // 3 - 2
-
-        GeoPoint point5 = new GeoPoint(diflat, diflong);
-
-        Marker startMarker5 = new Marker(map);
-        startMarker5.setTitle("Start point6");
-        startMarker5.setPosition(point5);
-        startMarker5.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMarker5);
-
-        Marker startMarker6 = new Marker(map);
-        startMarker6.setTitle("Start pointfewwe");
-        startMarker6.setPosition(point6);
-        startMarker6.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMarker6);
 
         // Specifies where the map will load
         IMapController mapController = map.getController();
         mapController.setZoom(17);
-        mapController.setCenter(point5);
+        mapController.setCenter(startpoint);
 
-        Marker startMarker1 = new Marker(map);
-        startMarker1.setTitle("Start point1");
-        startMarker1.setPosition(point1);
-        startMarker1.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMarker1);
-
-
-        Marker startMarker2 = new Marker(map);
-        startMarker2.setTitle("Start point2");
-        startMarker2.setPosition(point2);
-        startMarker2.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMarker2);
-
-        Marker startMarker3 = new Marker(map);
-        startMarker3.setTitle("Start point3");
-        startMarker3.setPosition(point3);
-        startMarker3.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMarker3);
-
-
-        Marker startMarker4 = new Marker(map);
-        startMarker4.setTitle("Start point4");
-        startMarker4.setPosition(point4);
-        startMarker4.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        map.getOverlays().add(startMarker4);
-
-
+        // Sets the marker for the starting coordinates
+        Marker startMarker = new Marker(map);
+        startMarker.setTitle("Start point");
+        startMarker.setPosition(startpoint);
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(startMarker);
 
         map.invalidate();
     }
 
 //    this function creates the Route using place holder locations
-    void addingWaypoints(MapView map, String mapquestApi) {
+    void addingWaypoints(MapView map, String mapquestApi, GeoPoint startPoint) {
 
         //      This makes a call to Mapquest as stated in the osmbonuspack tutorial
         //      Mapquest supports changing routes so they are suited for bicycle or pedestrians
@@ -158,7 +119,6 @@ public class MainActivity extends Activity {
         roadManager.addRequestOption("routeType=pedestrian");
 
         //      Placeholder route locations - Griffith Library to Harbour Town
-        GeoPoint startPoint = new GeoPoint(-27.962592, 153.379886);
         GeoPoint extraPoint = new GeoPoint(-27.926252, 153.382916);
 
         ArrayList<GeoPoint> waypoints = new ArrayList<GeoPoint>();
@@ -169,6 +129,61 @@ public class MainActivity extends Activity {
         Road road = roadManager.getRoad(waypoints);
         Polyline roadOverlay = RoadManager.buildRoadOverlay(road);
         map.getOverlays().add(roadOverlay);
+
+        map.invalidate();
+
+    }
+
+    void addMarkers(MapView map) {
+        // TESTING MULTIPLE MARKERS -------------------- WILL EVENTUALLY DELETE
+        double[] lat = new double[3];
+        double[] lon = new double[3];
+
+        double testLat;
+        double testLon;
+
+        lat[0] = -27.961073;
+        lon[0] = 153.379700;
+
+        lat[1] = -27.961073;
+        lon[1] = 153.383700;
+
+        lat[2] = -27.961073;
+        lon[2] = 153.384100;
+
+        // Following code will cluster the markers when zoomed out
+//        RadiusMarkerClusterer crimeMarkers = new RadiusMarkerClusterer(this);
+//        crimeMarkers.getTextPaint().setTextSize(25 * this.getResources().getDisplayMetrics().density);
+
+        Drawable clusterIconG = getResources().getDrawable(R.mipmap.new_marker_logo_green, null);
+        Drawable clusterIconY = getResources().getDrawable(R.mipmap.new_marker_logo_yellow, null);
+        Drawable clusterIconR = getResources().getDrawable(R.mipmap.new_marker_logo_red, null);
+
+        Cluster cluster = new Cluster(this);
+
+//        Bitmap clusterIcon = ((BitmapDrawable) clusterIconD).getBitmap();
+
+//        crimeMarkers.setIcon(clusterIcon);
+
+        for (int i = 0; i < 3; i++) {
+            testLat = lat[i];
+            testLon = lon[i];
+            //GeoPoint testStart = new GeoPoint(testLat, testLon);
+            GeoPoint testPoint = new GeoPoint(testLat, testLon);
+
+            Marker newMark = new Marker(map);
+            newMark.setIcon(getResources().getDrawable(R.drawable.new_marker_logo, null));
+            newMark.setPosition(testPoint);
+            newMark.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            newMark.setTitle("Possible buried treasure");
+//            map.getOverlays().add(newMark);
+
+            cluster.addMarker(newMark);
+//            crimeMarkers.add(newMark);
+
+        }
+
+        map.getOverlays().add(cluster.getCluster());
 
         map.invalidate();
 
@@ -236,8 +251,7 @@ public class MainActivity extends Activity {
                                 finish.setVisibility(View.GONE);
                                 route_button.setVisibility(View.GONE);
                                 search.setVisibility(View.VISIBLE);
-                                newMap(map);
-
+//                                newMap(map);
                             }
                         } else if (position == 2) { // if position is "safest route"
 //                            Following If/else statements determine whether the text fields are
@@ -271,99 +285,21 @@ public class MainActivity extends Activity {
                 .build();
     }
 
-// void get_location() {
-//     if (mGoogleApiClient == null) {
-//         mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                 .addConnectionCallbacks(this)
-//                 .addOnConnectionFailedListener(this)
-//                 .addApi(LocationServices.API)
-//                 .build();
-//     }
-//     if (mGoogleApiClient != null) {
-//         mGoogleApiClient.connect();
-//     }
-// }
-
+    public static Context getAppContext() { return MainActivity.context;}
 }
-
-
-
-// TESTING MULTIPLE MARKERS -------------------- WILL EVENTUALLY DELETE
-//        double[] lat = new double[3];
-//        double[] lon = new double[3];
-//
-//        lat[0] = -27.961073;
-//        lon[0] = 153.379700;
-//
-//        lat[1] = -27.961073;
-//        lon[1] = 153.383700;
-//
-//        lat[2] = -27.961073;
-//        lon[2] = 153.384100;
-
-//        for (int i = 0; i < 3; i++) {
-//            double testLat = lat[i];
-//            double testLon = lon[i];
-//            //GeoPoint testStart = new GeoPoint(testLat, testLon);
-//            testPoint[i] = new GeoPoint(testLat, testLon);
-//
-//            Marker newMark = new Marker(map);
-//            //newMark.setPosition(testStart);
-////            newMark.setPosition(testPoint[i]);
-//            newMark.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-//            newMark.setTitle("Possible buried treasure");
-//            map.getOverlays().add(newMark);
-//        }
-
-
-//      This adds markers when the app loads
-//        Marker startMarker = new Marker(map);
-//        startMarker.setTitle("Start point");
-
-//        startMarker.setPosition(startPoint);
-//        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-//
-//        Marker extraMarker = new Marker(map);
-//        extraMarker.setPosition(extraPoint);
-//        extraMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-
-//        map.getOverlays().add(startMarker);
-//        map.getOverlays().add(extraMarker);
-
-
-//
-////        This adds the node icons to each new road for the route.
-////        Add a node icon to mipmap folder and use that for node markers
-//        Drawable nodeIcon = getResources().getDrawable(R.mipmap.marker, null);
-//        for (int i = 0; i < road.mNodes.size(); i++) {
-//            RoadNode node = road.mNodes.get(i);
-//            Marker nodeMarker = new Marker(map);
-//            nodeMarker.setPosition(node.mLocation);
-//            nodeMarker.setIcon(nodeIcon);
-//            nodeMarker.setTitle("Step " + i);
-////          Below code adds travel instructions to each marker
-//            nodeMarker.setSnippet(node.mInstructions);
-//            nodeMarker.setSubDescription(Road.getLengthDurationText(this, node.mLength, node.mDuration));
-//            Drawable icon = getResources().getDrawable(R.mipmap.marker, null);
-//            nodeMarker.setImage(icon);
-//            map.getOverlays().add(nodeMarker);
-//        }
-
-
-
 
 
 //FUNCTIONS MADE - FINISH -------------------------------------------------
 
 
-//
+
 ////      OpenStreetMaps Places Of Interest (POI) with Nominatim
 //        NominatimPOIProvider poiProvider = new NominatimPOIProvider("");
 //        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "fuel", 50, 0.1);
 //
 //        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this);
 //        map.getOverlays().add(poiMarkers);
-//
+
 //        Drawable clusterIconD = getResources().getDrawable(R.drawable.green_cluster_logo, null);
 //        Bitmap clusterIcon = ((BitmapDrawable) clusterIconD).getBitmap();
 //
