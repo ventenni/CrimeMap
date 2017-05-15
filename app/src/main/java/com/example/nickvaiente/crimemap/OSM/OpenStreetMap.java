@@ -54,7 +54,7 @@ public class OpenStreetMap extends Activity{
 
                 while (result == null && sleepDuration < 10) {
                     String searching;
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(2);
                     if (sleepDuration % 3 == 0){
                         searching = "Searching.  ";
                     } else if (sleepDuration % 3 == 0){
@@ -63,7 +63,7 @@ public class OpenStreetMap extends Activity{
                         searching = "Searching...";
                     }
                     showToast(searching, 0);
-                    sleepDuration++;
+                    sleepDuration += 2;
                 }
 
                 if (result != null) {

@@ -1,10 +1,14 @@
 package com.example.nickvaiente.crimemap;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -52,6 +56,19 @@ public class MainActivity extends Activity {
         MapView mapView = (MapView) findViewById(R.id.map);
         Map map = new Map(mapView, Double.parseDouble(latitude), Double.parseDouble(longitude));
 
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(searchBox, InputMethodManager.SHOW_IMPLICIT);
+//        searchBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//
+//                }
+//            }
+//        });
+//        searchBox.setImeActionLabel("Search", KeyEvent.KEYCODE_ENTER);
+
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Read location from search box
@@ -66,11 +83,29 @@ public class MainActivity extends Activity {
 
                     QueenslandPoliceService.getInstance().performSearch(latitude, longitude);
 //                QueenslandPoliceService.getInstance().performSearch(searchInput);
+                    int sleepDuration = 0;
+                    while (QueenslandPoliceService.getInstance().getOffenceBoundary() == null && sleepDuration < 10) {
+                        String loading;
+                        try {
+                            TimeUnit.SECONDS.sleep(2);
+                        }
+                        catch (InterruptedException e){
+                            Log.d("Print", "Interrupted exception in main");
+                        }
+                        if (sleepDuration % 3 == 0){
+                            loading = "Loading.  ";
+                        } else if (sleepDuration % 3 == 0){
+                            loading = "Loading.. ";
+                        } else {
+                            loading = "Loading...";
+                        }
+                        showToast(loading, 0);
+                        sleepDuration += 2;
+                    }
                     OffenceBoundary boundary = QueenslandPoliceService.getInstance().getOffenceBoundary();
                     for(int i = 0; i < boundary.getResultCount(); i++){
                         double latitude = QueenslandPoliceService.getInstance().getOffenceCoordinates(boundary.getResult().get(i).getGeometryWKT(), 0);
                         double longitude = QueenslandPoliceService.getInstance().getOffenceCoordinates(boundary.getResult().get(i).getGeometryWKT(), 1);
-
                     }
                     MapView mapView = (MapView) findViewById(R.id.map);
                     Map map = new Map(mapView, Double.parseDouble(latitude), Double.parseDouble(longitude));

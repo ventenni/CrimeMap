@@ -54,14 +54,22 @@ public class QueenslandPoliceService{
 
     public void setSuccess(Success success) {
         this.success = success;
+//        this.success.getAdditionalProperties().putAll(success.getAdditionalProperties());
+//        this.success.setMessage(success.getMessage());
+//        this.success.getResult().addAll(success.getResult());
+//        this.success.setResultCount(success.getResultCount());
+//        this.success.setSuccess(success.getSuccess());
     }
 
     public OffenceBoundary getOffenceBoundary() {
-        return offenceBoundary;
+        return this.offenceBoundary;
     }
 
     public void setOffenceBoundary(OffenceBoundary offenceBoundary) {
         this.offenceBoundary = offenceBoundary;
+        if(this.offenceBoundary == null){
+
+        }
     }
 
     public double getOffenceCoordinates(String geometryWKT, int index){

@@ -33,6 +33,8 @@ public class QpsApiAccess extends AsyncTask<String,Void,Void>
 
     @Override
     protected Void doInBackground(String... params) {
+        if(android.os.Debug.isDebuggerConnected())
+            android.os.Debug.waitForDebugger();
         String url = format(LOCATION_URL, params[0], params[1], maxResults);
 //        String url = format(NAME_URL, params[0], maxResults);
 
