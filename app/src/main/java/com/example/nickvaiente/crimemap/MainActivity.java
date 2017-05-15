@@ -136,8 +136,8 @@ public class MainActivity extends Activity {
 
     void addMarkers(MapView map) {
         // TESTING MULTIPLE MARKERS -------------------- WILL EVENTUALLY DELETE
-        double[] lat = new double[3];
-        double[] lon = new double[3];
+        double[] lat = new double[11];
+        double[] lon = new double[11];
 
         double testLat;
         double testLon;
@@ -150,6 +150,7 @@ public class MainActivity extends Activity {
 
         lat[2] = -27.961073;
         lon[2] = 153.384100;
+
 
         // Following code will cluster the markers when zoomed out
 //        RadiusMarkerClusterer crimeMarkers = new RadiusMarkerClusterer(this);
@@ -224,7 +225,7 @@ public class MainActivity extends Activity {
                 .withActivity(this)
                 .addDrawerItems(
                         item1,
-                        new DividerDrawerItem(),
+
                         item2,
                         item3,
                         item4
@@ -296,34 +297,3 @@ public class MainActivity extends Activity {
 ////      OpenStreetMaps Places Of Interest (POI) with Nominatim
 //        NominatimPOIProvider poiProvider = new NominatimPOIProvider("");
 //        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "fuel", 50, 0.1);
-//
-//        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this);
-//        map.getOverlays().add(poiMarkers);
-
-//        Drawable clusterIconD = getResources().getDrawable(R.drawable.green_cluster_logo, null);
-//        Bitmap clusterIcon = ((BitmapDrawable) clusterIconD).getBitmap();
-//
-//        poiMarkers.setIcon(clusterIcon);
-////      Below sets the POI marker with the title, description etc. It also uses the shield from
-////      the CrimeMap logo as a marker.
-//        Drawable poiIcon = getResources().getDrawable(R.mipmap.shield_marker, null);
-//        for (POI poi : pois) {
-//            Marker poiMarker = new Marker(map);
-//            poiMarker.setTitle(poi.mType);
-//            poiMarker.setSnippet(poi.mDescription);
-//            poiMarker.setPosition(poi.mLocation);
-//            poiMarker.setIcon(poiIcon);
-//            if (poi.mThumbnail != null) {
-////                poiItem.setImage(new BitmapDrawable(poi.mThumbnail));
-////                poiMarker.setImage(new BitmapDrawable(R.mipmap.shield_marker, poi.mThumbnail));
-//                poiMarker.setImage(getDrawable(R.mipmap.shield_marker));
-//            }
-//            poiMarkers.add(poiMarker);
-//        }
-//
-////        RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this);
-//
-////        Drawable clusterIconD = getResources().getDrawable(R.drawable.green_cluster_logo);
-//
-//
-//        map.invalidate();
