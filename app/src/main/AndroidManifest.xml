@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nickvaiente.crimemap">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
+    <!--<manifest xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--package="com.google.android.gms.location.sample.basiclocationsample" >-->
+
+        <!--<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>-->
+    <!--</manifest>-->
+
+
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/smaller_crimemap_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -17,6 +28,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".HelpLayoutActivity"
+            android:label="@string/Help">
+        </activity>
+        <activity
+            android:name=".AboutLayoutActivity"
+            android:label="@string/About">
         </activity>
     </application>
 

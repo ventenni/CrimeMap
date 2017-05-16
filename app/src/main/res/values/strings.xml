@@ -1,4 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CrimeMap</string>
-    <string name="action_settings">Settings</string>
+    <!--Side Menu Titles-->
+    <string name="Home"> Home </string>
+    <string name="Route"> Safe Route </string>
+    <string name="About"> About </string>
+    <string name="Help"> Help </string>
+
+
+    <string name="about_content"> CrimeMap description and
+        why/where it was created. </string>
+    <string name="help_content"> Help Page </string>
+
+    <!--Crime Map Logo String-->
+    <string name="crime_map_logo">Crime Map Logo</string>
 </resources>
