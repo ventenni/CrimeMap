@@ -1,10 +1,12 @@
-package com.example.nickvaiente.crimemap;
+package com.example.nickvaiente.crimemap.graphical.map;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+
+import com.example.nickvaiente.crimemap.R;
 
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.views.overlay.Marker;

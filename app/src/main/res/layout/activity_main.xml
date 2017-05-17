@@ -1,32 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:baselineAligned="false">
 
-    <android.support.design.widget.TextInputLayout
+
+    <LinearLayout
+        android:id="@+id/searchMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Search"
-        android:textStyle="italic"
-        android:visibility="visible"/>
+        android:visibility="visible">
 
         <EditText
             android:id="@+id/searchBox"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"/>
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="0.7"
+            android:ems="10" />
 
         <Button
             android:id="@+id/searchButton"
-            android:layout_height="match_parent"
-            android:layout_width="180px"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="0.25"
             android:text="Search"/>
 
-    </android.support.design.widget.TextInputLayout>
+        <Button
+            android:id="@+id/filterButton"
+            android:layout_height="wrap_content"
+            android:layout_width="0dip"
+            android:layout_weight="0.1"
+            android:drawableLeft="@drawable/filter_icon"
+            android:drawablePadding="2dip"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filterMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight=".1">
+
+            <SeekBar
+                android:id="@+id/timePeriod"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="9"
+                android:progress="3"
+                android:layout_weight=".1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1">
+
+                <TextView
+                    android:id="@+id/labelTimePeriodHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="Time Period: "
+                    android:gravity="right"
+                    android:textColor="@color/md_black_1000"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/labelTimePeriod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:text="6 Months"
+                    android:textColor="@color/md_black_1000"
+                    android:textSize="16dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight=".5">
+
+                <CheckBox
+                    android:id="@+id/checkBox52"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Good Order Offence"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox35"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Fraud"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox39"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Handling Stolen Goods"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox45"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Drug Offence"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox54"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Traffic and Related Offences"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox47"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Liquor"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox51"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Weapons Act Offences"
+                    android:checked="true"/>
+
+
+                <CheckBox
+                    android:id="@+id/checkBox17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Other Offences Against People"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox55"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Other"
+                    android:checked="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight=".5">
+
+                <CheckBox
+                    android:id="@+id/checkBox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Homicide"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Assault"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Robbery"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="Unlawful Entry"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Arson"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Unlawful Use of Motor Vehicle"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Other Theft"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Other Property Damage"
+                    android:checked="true"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="Unused"
+                    android:visibility="invisible"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight=".1">
+            <Button
+                android:id="@+id/submitFilterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="OK"/>
+        </LinearLayout>
+    </LinearLayout>
+
     <EditText
         android:id="@+id/start"
         android:layout_width="match_parent"
@@ -34,7 +278,6 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Start"
-        android:textStyle="italic"
         android:visibility="gone" />
 
     <EditText
@@ -44,7 +287,6 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:text="End Route"
-        android:textStyle="italic"
         android:visibility="gone"/>
 
     <Button
@@ -59,6 +301,5 @@
         android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" />
-
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package utils;
+package com.example.nickvaiente.crimemap.QPS;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -44,9 +44,10 @@ public class QpsApiAccess extends AsyncTask<String,Void,Void>
         Success successResults = QueenslandPoliceService.getInstance().getSuccess();
         String boundaryList = getBoundaryList(successResults);
         long endDate = System.currentTimeMillis() / 1000L;
-//        long startDate = getStartDate(-28);
-        long startDate = 1336614698; //5 years ago??
-        String filters = "1,8,14";//17,21,27,28,29,30";//,35,39,45,47,51,52,54,55";
+
+
+        long startDate = endDate - QueenslandPoliceService.getInstance().getTimePeriod();
+        String filters = QueenslandPoliceService.getInstance().getOffenceTypes();
 
         String offenceUrl = format(OFFENCE_URL, boundaryList, startDate, endDate, filters);
 
@@ -86,12 +87,5 @@ public class QpsApiAccess extends AsyncTask<String,Void,Void>
             Log.e("Geography", "Success is empty");
             return "";
         }
-    }
-
-    public long getStartDate(int days)
-    {
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, days);
-        return c.getTime().getTime() / 1000L;
     }
 }

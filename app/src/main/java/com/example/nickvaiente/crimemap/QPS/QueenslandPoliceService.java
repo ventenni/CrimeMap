@@ -1,21 +1,12 @@
 package com.example.nickvaiente.crimemap.QPS;
 
-import android.app.Activity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
-import com.example.nickvaiente.crimemap.OSM.OpenStreetMap;
 import com.example.nickvaiente.crimemap.QPS.entity.geography.Success;
 import com.example.nickvaiente.crimemap.QPS.entity.offence.OffenceBoundary;
-import com.example.nickvaiente.crimemap.R;
 
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import utils.QpsApiAccess;
 
 import static java.lang.String.format;
 
@@ -28,6 +19,9 @@ public class QueenslandPoliceService{
     private static final String LOCATION_URL = "https://data.police.qld.gov.au/api/boundary?latitude=%s&longitude=%s&maxresults=%s";
     private Success success;
     private OffenceBoundary offenceBoundary;
+
+    private String offenceTypes;
+    private long timePeriod;
 
 
     public QueenslandPoliceService() {
@@ -87,6 +81,22 @@ public class QueenslandPoliceService{
             Log.d("Print matchLat", coordinate);
 
         return Double.parseDouble(coordinate);
+    }
+
+    public String getOffenceTypes() {
+        return offenceTypes;
+    }
+
+    public void setOffenceTypes(String offenceTypes) {
+        this.offenceTypes = offenceTypes;
+    }
+
+    public long getTimePeriod() {
+        return timePeriod;
+    }
+
+    public void setTimePeriod(long timePeriod) {
+        this.timePeriod = timePeriod;
     }
 }
 

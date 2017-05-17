@@ -30,11 +30,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HelpLayoutActivity"
+            android:name=".graphical.pages.HelpLayoutActivity"
             android:label="@string/Help">
         </activity>
         <activity
-            android:name=".AboutLayoutActivity"
+            android:name=".graphical.pages.AboutLayoutActivity"
             android:label="@string/About">
         </activity>
     </application>
