@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import com.example.nickvaiente.crimemap.OSM.OpenStreetMap;
 import com.example.nickvaiente.crimemap.QPS.QueenslandPoliceService;
 import com.example.nickvaiente.crimemap.graphical.graphs.MainGraphs;
 import com.example.nickvaiente.crimemap.graphical.map.Map;
+import com.example.nickvaiente.crimemap.graphical.map.Routes;
 import com.example.nickvaiente.crimemap.graphical.pages.AboutLayoutActivity;
 import com.example.nickvaiente.crimemap.graphical.pages.HelpLayoutActivity;
 import com.github.mikephil.charting.charts.BarChart;
@@ -36,19 +40,25 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Polyline;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity {
 
     final String mapquestApi = "EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru"; // MAKE PRIVATE AS WELL?
 
+    public static Context context;
     private com.mikepenz.materialdrawer.Drawer slideMenu;
     private String searchInput;
+    private LocationManager locationManager;
     private String latitude = "-28.002373";
     private String longitude = "153.4145987";
     private MapView mapView;
-    public static Context context;
+    OpenStreetMap test1 = OpenStreetMap.getInstance();
+    QueenslandPoliceService test2 = QueenslandPoliceService.getInstance();
 
 
     @Override
@@ -56,10 +66,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainActivity.context = getApplicationContext();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //    public static Context context;
 
         long defaultTimePeriod = 15778463;
         String defaultOffences = "1,8,14,17,21,27,28,29,30,35,39,45,47,51,52,54,55";
+        updateGPS();
 
         final EditText searchBox = (EditText) findViewById(R.id.searchBox);
         final ImageButton toggleButton = (ImageButton) findViewById(R.id.toggleButton);
@@ -73,15 +85,16 @@ public class MainActivity extends Activity {
 
         final LinearLayout searchMenu = (LinearLayout) findViewById(R.id.searchMenu);
         final LinearLayout filterMenu = (LinearLayout) findViewById(R.id.filterMenu);
-//        OpenStreetMap.getInstance();
+
+        mapView = (MapView) findViewById(R.id.map);
+        mapView.getOverlays().clear();
+        final Map map = new Map(mapView, Double.parseDouble(latitude), Double.parseDouble(longitude));
+
         QueenslandPoliceService.getInstance().setOffenceTypes(defaultOffences);
         QueenslandPoliceService.getInstance().setTimePeriod(defaultTimePeriod);
-        mapView = (MapView) findViewById(R.id.map);
-        // Placeholder location - Griffith Library
-        final Map map = new Map(mapView, -27.962592, 153.379886);
-        mapView.getOverlays().clear();
-//        addingWaypoints(mapView, mapquestApi, startPoint);
+        displayMarkers(map);
 
+//        addingWaypoints(mapView, mapquestApi, startPoint);
         createDrawer();
 
         toggleButton.setOnClickListener(new View.OnClickListener() {
@@ -126,23 +139,23 @@ public class MainActivity extends Activity {
             String offenceTypes = "";
 
             CheckBox[] checkBoxes = new CheckBox[17];
-            checkBoxes[0] = (CheckBox) findViewById(R.id.checkBox1); //Homicide
-            checkBoxes[1] = (CheckBox) findViewById(R.id.checkBox8); //Assault
-            checkBoxes[2] = (CheckBox) findViewById(R.id.checkBox14); //Robbery
-            checkBoxes[3] = (CheckBox) findViewById(R.id.checkBox17); //Other Offences Against the Person
-            checkBoxes[4] = (CheckBox) findViewById(R.id.checkBox21); //Unlawful Entry
-            checkBoxes[5] = (CheckBox) findViewById(R.id.checkBox27); //Arson
-            checkBoxes[6] = (CheckBox) findViewById(R.id.checkBox28); //Other Property Damage
-            checkBoxes[7] = (CheckBox) findViewById(R.id.checkBox29); //Unlawful Use of Motor Vehicle
-            checkBoxes[8] = (CheckBox) findViewById(R.id.checkBox30); //Other Theft
-            checkBoxes[9] = (CheckBox) findViewById(R.id.checkBox35); //Fraud
-            checkBoxes[10] = (CheckBox) findViewById(R.id.checkBox39); //Handling Stolen Goods
-            checkBoxes[11] = (CheckBox) findViewById(R.id.checkBox45); //Drug Offence
-            checkBoxes[12] = (CheckBox) findViewById(R.id.checkBox47); //Liquor (excl. Drunkenness)
-            checkBoxes[13] = (CheckBox) findViewById(R.id.checkBox51); //Weapons Act Offences
-            checkBoxes[14] = (CheckBox) findViewById(R.id.checkBox52); //Good Order Offence
-            checkBoxes[15] = (CheckBox) findViewById(R.id.checkBox54); //Traffic and Related Offences
-            checkBoxes[16] = (CheckBox) findViewById(R.id.checkBox55); //Other
+            checkBoxes[0] = (CheckBox) findViewById(R.id.checkBox1);   //Homicide R
+            checkBoxes[1] = (CheckBox) findViewById(R.id.checkBox8);   //Assault R
+            checkBoxes[2] = (CheckBox) findViewById(R.id.checkBox14);  //Robbery Y
+            checkBoxes[3] = (CheckBox) findViewById(R.id.checkBox17);  //Other Offences Against People Y
+            checkBoxes[4] = (CheckBox) findViewById(R.id.checkBox21);  //Unlawful Entry Y
+            checkBoxes[5] = (CheckBox) findViewById(R.id.checkBox27);  //Arson R
+            checkBoxes[6] = (CheckBox) findViewById(R.id.checkBox28);  //Other Property Damage Y
+            checkBoxes[7] = (CheckBox) findViewById(R.id.checkBox29);  //Unlawful Use of Motor Vehicle W
+            checkBoxes[8] = (CheckBox) findViewById(R.id.checkBox30);  //Other Theft W
+            checkBoxes[9] = (CheckBox) findViewById(R.id.checkBox35);  //Fraud Y
+            checkBoxes[10] = (CheckBox) findViewById(R.id.checkBox39); //Handling Stolen Goods W
+            checkBoxes[11] = (CheckBox) findViewById(R.id.checkBox45); //Drug Offence Y
+            checkBoxes[12] = (CheckBox) findViewById(R.id.checkBox47); //Liquor (excl. Drunkenness) W
+            checkBoxes[13] = (CheckBox) findViewById(R.id.checkBox51); //Weapons Act Offences Y
+            checkBoxes[14] = (CheckBox) findViewById(R.id.checkBox52); //Good Order Offence W
+            checkBoxes[15] = (CheckBox) findViewById(R.id.checkBox54); //Traffic and Related Offences W
+            checkBoxes[16] = (CheckBox) findViewById(R.id.checkBox55); //Other W
 
             int offenceID[] = {1, 8, 14, 17, 21, 27, 28, 29, 30, 35, 39, 45, 47, 51, 52, 54, 55};
 
@@ -193,8 +206,6 @@ public class MainActivity extends Activity {
 
         compareButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
-                lineChart.fitScreen();
 
                 Compare compare1 = new Compare();
                 Compare compare2 = new Compare();
@@ -228,12 +239,32 @@ public class MainActivity extends Activity {
                 compare1.plotData();
                 compare2.plotData();
 
-                MainGraphs mainGraphs = new MainGraphs();
-                mainGraphs.createLineChart(lineChart, compare1, compare2);
-//                MainGraphs mainGraphs2 = new MainGraphs();
-//                setContentView(R.layout.activity_piechart);
-//                pieChart = (PieChart) findViewById(R.id.pieChart);
-//                mainGraphs2.createPieChart(pieChart);
+                MainGraphs lineGraph = new MainGraphs();
+                TextView labelLineChart = (TextView) findViewById(R.id.labelLineChart);
+                labelLineChart.setText(compare1.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb() + " & " + compare2.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb());
+                LineChart lineGraphView = (LineChart) findViewById(R.id.lineChart);
+                lineGraph.createLineChart(lineGraphView, compare1, compare2);
+                lineGraphView.fitScreen();
+
+                MainGraphs barChart1 = new MainGraphs();
+                TextView labelBarChart1 = (TextView) findViewById(R.id.labelBarChart1);
+                labelBarChart1.setText("Offences in " + compare1.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb());
+                BarChart barChartView1 = (BarChart) findViewById(R.id.barChart1);
+                barChart1.createBarChart(barChartView1, compare1);
+
+                MainGraphs barChart2 = new MainGraphs();
+                TextView labelBarChart2 = (TextView) findViewById(R.id.labelBarChart2);
+                labelBarChart2.setText("Offences in " + compare2.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb());
+                BarChart barChartView2 = (BarChart) findViewById(R.id.barChart2);
+                barChart2.createBarChart(barChartView2, compare2);
+
+//                MainGraphs pieChart1 = new MainGraphs();
+//                PieChart pieChartView1 = (PieChart) findViewById(R.id.pieChartSuburb1);
+//                pieChart1.createPieChart(pieChartView1, compare1);
+//
+//                MainGraphs pieChart2 = new MainGraphs();
+//                PieChart pieChartView2 = (PieChart) findViewById(R.id.pieChartSuburb2);
+//                pieChart2.createPieChart(pieChartView2, compare2);
 //
 //                MainGraphs mainGraphs3 = new MainGraphs();
 //                setContentView(R.layout.activity_barchart);
@@ -351,7 +382,7 @@ public class MainActivity extends Activity {
         //                progressBar.setVisibility(View.VISIBLE);
 //                searchButton.setVisibility(View.GONE);
         //Read location from search box
-        searchInput = searchBox.getText().toString().trim().replaceAll("[^a-zA-Z ]", "");
+        searchInput = searchBox.getText().toString().trim();//.replaceAll("[^a-zA-Z ]", "");
         //User input validation (using suburb name to search OSM and QPS)g
         OpenStreetMap.getInstance().resetInstance();
         Log.i("Print", "Before OSM perform");
@@ -362,20 +393,28 @@ public class MainActivity extends Activity {
             searchBox.setText(searchInput);
             latitude = OpenStreetMap.getInstance().getResult().getLat();
             longitude = OpenStreetMap.getInstance().getResult().getLon();
-            QueenslandPoliceService.getInstance().resetInstance();
-            Log.i("Print", "Before QPS perform");
-            QueenslandPoliceService.getInstance().performSearch(latitude, longitude);
-            qpsWaitTimer();
-            Log.i("Print", "After QPS timer");
-            //clears existing map markers
-            mapView.getOverlays().clear();
-            map.setLocation(Double.parseDouble(latitude), Double.parseDouble(longitude));
-            map.addMarkers();
+            String suburb = OpenStreetMap.getInstance().getResult().getAddress().getSuburb();
+            List<List<String>> polygonPoints = OpenStreetMap.getInstance().getResult().getPolygonpoints();
+            //pass bounding box coords to the function that displays the suburb perimeter
+            displayMarkers(map);
         } else {
             showToast("No Results. Timed Out :(", 1);
         }
 //                progressBar.setVisibility(View.GONE);
 //                searchButton.setVisibility(View.VISIBLE);
+    }
+
+    private void displayMarkers(Map map){
+        QueenslandPoliceService.getInstance().resetInstance();
+        Log.i("Print", "Before QPS perform");
+        QueenslandPoliceService.getInstance().performSearch(latitude, longitude);
+        qpsWaitTimer();
+        Log.i("Print", "After QPS timer");
+        //clears existing map markers
+        mapView.getOverlays().clear();
+        map.setLocation(Double.parseDouble(latitude), Double.parseDouble(longitude));
+        map.addMarkers();
+        map.displayPerimeter();
     }
 
     private void qpsWaitTimer(){
@@ -411,7 +450,7 @@ public class MainActivity extends Activity {
         LinearLayout compareMenu = (LinearLayout) findViewById(R.id.compareMenu);
         LinearLayout routeMenu = (LinearLayout) findViewById(R.id.routeMenu);
 
-        LineChart lineChart = (LineChart) findViewById(R.id.lineChart);
+        ScrollView graphs = (ScrollView) findViewById(R.id.graphs);
 
         if (page == 0) { // If page is "Home"
             topMenu.setVisibility(View.VISIBLE);
@@ -425,7 +464,7 @@ public class MainActivity extends Activity {
             compareMenu.setVisibility(View.GONE);
             routeMenu.setVisibility(View.GONE);
 
-            lineChart.setVisibility(View.GONE);
+            graphs.setVisibility(View.GONE);
             mapView.setVisibility(View.VISIBLE);
         } else if (page == 1) { // If page is "Compare"
             topMenu.setVisibility(View.VISIBLE);
@@ -439,7 +478,8 @@ public class MainActivity extends Activity {
             compareMenu.setVisibility(View.VISIBLE);
             routeMenu.setVisibility(View.GONE);
 
-            lineChart.setVisibility(View.VISIBLE);
+            graphs.setVisibility(View.VISIBLE);
+
             mapView.setVisibility(View.GONE);
         } else if (page == 2) { // if page is "safest route"
             topMenu.setVisibility(View.VISIBLE);
@@ -453,7 +493,7 @@ public class MainActivity extends Activity {
             compareMenu.setVisibility(View.GONE);
             routeMenu.setVisibility(View.VISIBLE);
 
-            lineChart.setVisibility(View.GONE);
+            graphs.setVisibility(View.GONE);
             mapView.setVisibility(View.VISIBLE);
         } else if (page == 3) { // if page is "safest route"
             topMenu.setVisibility(View.GONE);
@@ -467,9 +507,50 @@ public class MainActivity extends Activity {
             compareMenu.setVisibility(View.GONE);
             routeMenu.setVisibility(View.GONE);
 
-            lineChart.setVisibility(View.GONE);
+            graphs.setVisibility(View.GONE);
             mapView.setVisibility(View.GONE);
         }
+    }
+
+    public void updateGPS() throws SecurityException{
+        Boolean test1 = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location locationNet = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = locationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        if (bestLocation != null){
+            latitude = bestLocation.getLatitude() + "";
+            longitude = bestLocation.getLongitude() + "";
+        }
+
+//        long GPSLocationTime = 0;
+//        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
+//
+//        long NetLocationTime = 0;
+//
+//        if (null != locationNet) {
+//            NetLocationTime = locationNet.getTime();
+//        }
+//
+//        if ( 0 < GPSLocationTime - NetLocationTime ) {
+//            latitude = locationGPS.getLatitude() + "";
+//            longitude = locationGPS.getLongitude() + "";
+//        }
+//        else {
+//            latitude = locationNet.getLatitude() + "";
+//            longitude = locationNet.getLongitude() + "";
+//        }
     }
 
 

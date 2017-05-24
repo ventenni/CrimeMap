@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.nickvaiente.crimemap.R;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.nickvaiente.crimemap.MainActivity.getAppContext;
@@ -21,13 +23,13 @@ import static com.example.nickvaiente.crimemap.MainActivity.showToast;
 
 public class OpenStreetMap extends Activity{
     private static OpenStreetMap instance = new OpenStreetMap();
-    private String ADDRESS_URL = "http://nominatim.openstreetmap.org/search/%s Queensland?countrycodes=AU&format=json&addressdetails=1&limit=1&polygon_svg=1";
+    private String ADDRESS_URL = "http://nominatim.openstreetmap.org/search/%s Queensland?countrycodes=AU&format=json&addressdetails=1&limit=1"; //&polygon=1";
+//    private String ADDRESS_URL = "http://nominatim.openstreetmap.org/search?q=%s+Queensland&format=json&polygon=1&addressdetails=1";
     private LocationInfo result;
-    private ProgressBar spinner;
+    private List<Address> suggestions = new ArrayList<>();
 
     public OpenStreetMap() {
         this.result = null;
-
     }
 
     public static OpenStreetMap getInstance() {
@@ -46,24 +48,25 @@ public class OpenStreetMap extends Activity{
         if (searchInput.length() > 0) {
             try {
 
-                Log.i("Message", "Testing");
+                Log.i("Print", "PerformSearch in OSM");
                 //Search OSM for matching locations and return a maximum result of 1
                 String url = String.format(ADDRESS_URL, searchInput);
+                Log.i("Print", "Using url " + url );
                 new RetrieveLocationJSONTask().execute(url);
                 int sleepDuration = 0;
 
                 while (result == null && sleepDuration < 10) {
-                    String searching;
-                    TimeUnit.SECONDS.sleep(2);
-                    if (sleepDuration % 3 == 0){
-                        searching = "Searching.  ";
-                    } else if (sleepDuration % 3 == 0){
-                        searching = "Searching.. ";
-                    } else {
-                        searching = "Searching...";
-                    }
-                    showToast(searching, 0);
-                    sleepDuration += 2;
+//                    String searching;
+                    TimeUnit.SECONDS.sleep(1);
+//                    if (sleepDuration % 3 == 0){
+//                        searching = "Searching.  ";
+//                    } else if (sleepDuration % 3 == 0){
+//                        searching = "Searching.. ";
+//                    } else {
+//                        searching = "Searching...";
+//                    }
+//                    showToast(searching, 0);
+                    sleepDuration += 1;
                 }
 
                 if (result != null) {
@@ -78,6 +81,50 @@ public class OpenStreetMap extends Activity{
             }
         }
 
+    }
+
+    public void performSuggestion(String searchInput) {
+        if (searchInput.length() > 2) {
+            try {
+
+                Log.i("Print", "PerformSuggestion in OSM");
+                //Search OSM for matching locations and return a maximum result of 1
+                String url = String.format("http://nominatim.openstreetmap.org/search/%s Queensland?countrycodes=AU&format=json&addressdetails=1&limit=5&polygon_svg=1", searchInput);
+                Log.i("Print", "Using url " + url );
+                new RetrieveLocationJSONTask().execute(url);
+                int sleepDuration = 0;
+
+                while (result == null && sleepDuration < 20) {
+//                    String searching;
+                    TimeUnit.SECONDS.sleep(1);
+//                    if (sleepDuration % 3 == 0){
+//                        searching = "Searching.  ";
+//                    } else if (sleepDuration % 3 == 0){
+//                        searching = "Searching.. ";
+//                    } else {
+//                        searching = "Searching...";
+//                    }
+//                    showToast(searching, 0);
+                    sleepDuration += 1;
+                }
+
+                if (result != null) {
+                    String lat = getResult().getLat();
+                    String lon = getResult().getLon();
+
+                    Log.i("Print", lat);
+                    Log.i("Print", lon);
+                }
+            } catch(Exception e) {
+                e.getMessage();
+            }
+        }
+    }
+
+
+
+    public void resetInstance(){
+        this.result = null;
     }
 
 

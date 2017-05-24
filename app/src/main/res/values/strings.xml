@@ -2,6 +2,7 @@
 <resources>
     <!--Side Menu Titles-->
     <string name="Home"> Home </string>
+    <string name="Compare"> Compare </string>
     <string name="Route"> Safe Route </string>
     <string name="About"> About </string>
     <string name="Help"> Help </string>

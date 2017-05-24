@@ -1,22 +1,14 @@
 package com.example.nickvaiente.crimemap.OSM;
-
-/**
- * Created by Tae's Puter on 7/05/2017.
- */
-
-
-
-        import java.util.HashMap;
-        import java.util.List;
-        import java.util.Map;
-
-        import com.example.nickvaiente.crimemap.OSM.Address;
-        import com.fasterxml.jackson.annotation.JsonAnyGetter;
-        import com.fasterxml.jackson.annotation.JsonAnySetter;
-        import com.fasterxml.jackson.annotation.JsonIgnore;
-        import com.fasterxml.jackson.annotation.JsonInclude;
-        import com.fasterxml.jackson.annotation.JsonProperty;
-        import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -25,18 +17,18 @@ package com.example.nickvaiente.crimemap.OSM;
         "osm_type",
         "osm_id",
         "boundingbox",
+        "polygonpoints",
         "lat",
         "lon",
         "display_name",
         "class",
         "type",
         "importance",
-        "icon",
-        "address",
-        "svg"
+        "address"
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationInfo {
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonProperty("place_id")
     private String placeId;
     @JsonProperty("licence")
@@ -47,6 +39,8 @@ public class LocationInfo {
     private String osmId;
     @JsonProperty("boundingbox")
     private List<String> boundingbox = null;
+    @JsonProperty("polygonpoints")
+    private List<List<String>> polygonpoints = null;
     @JsonProperty("lat")
     private String lat;
     @JsonProperty("lon")
@@ -59,12 +53,8 @@ public class LocationInfo {
     private String type;
     @JsonProperty("importance")
     private Double importance;
-    @JsonProperty("icon")
-    private String icon;
     @JsonProperty("address")
     private Address address;
-    @JsonProperty("svg")
-    private String svg;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -116,6 +106,16 @@ public class LocationInfo {
     @JsonProperty("boundingbox")
     public void setBoundingbox(List<String> boundingbox) {
         this.boundingbox = boundingbox;
+    }
+
+    @JsonProperty("polygonpoints")
+    public List<List<String>> getPolygonpoints() {
+        return polygonpoints;
+    }
+
+    @JsonProperty("polygonpoints")
+    public void setPolygonpoints(List<List<String>> polygonpoints) {
+        this.polygonpoints = polygonpoints;
     }
 
     @JsonProperty("lat")
@@ -178,16 +178,6 @@ public class LocationInfo {
         this.importance = importance;
     }
 
-    @JsonProperty("icon")
-    public String getIcon() {
-        return icon;
-    }
-
-    @JsonProperty("icon")
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
     @JsonProperty("address")
     public Address getAddress() {
         return address;
@@ -196,16 +186,6 @@ public class LocationInfo {
     @JsonProperty("address")
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    @JsonProperty("svg")
-    public String getSvg() {
-        return svg;
-    }
-
-    @JsonProperty("svg")
-    public void setSvg(String svg) {
-        this.svg = svg;
     }
 
     @JsonAnyGetter
@@ -219,3 +199,5 @@ public class LocationInfo {
     }
 
 }
+
+

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.nickvaiente.crimemap.QPS.entity.geography.Success;
 import com.example.nickvaiente.crimemap.QPS.entity.offence.OffenceBoundary;
 
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,6 +99,12 @@ public class QueenslandPoliceService{
     public void setTimePeriod(long timePeriod) {
         this.timePeriod = timePeriod;
     }
+
+    public void resetInstance(){
+        this.offenceBoundary = null;
+        this.success = null;
+    }
+
 }
 
 

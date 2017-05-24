@@ -1,12 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:baselineAligned="false">
 
+    <LinearLayout
+        android:id="@+id/topMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/toggleButton"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_menu_black_24dp"
+            android:visibility="visible"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_height="match_parent"
+            android:layout_width="0dip"
+            android:layout_weight="0.8"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_height="match_parent"
+            android:layout_width="0dip"
+            android:layout_weight="0.8"
+            android:text="Search Area"
+            android:drawableEnd="@drawable/ic_send_black_24dp"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/routeButton"
+            android:layout_height="match_parent"
+            android:layout_width="0dip"
+            android:layout_weight="0.8"
+            android:text="Find Route"
+            android:drawableEnd="@drawable/ic_send_black_24dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/compareButton"
+            android:layout_height="match_parent"
+            android:layout_width="0dip"
+            android:layout_weight="0.8"
+            android:text="Compare Results"
+            android:drawableEnd="@drawable/ic_send_black_24dp"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/filterButton"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_filter_list_black_24dp"
+            android:visibility="visible"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/searchMenu"
@@ -18,24 +86,11 @@
             android:id="@+id/searchBox"
             android:layout_height="wrap_content"
             android:layout_width="0dip"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
+            android:hint="Enter Location"
+            android:inputType="text"
+            android:maxLines="1"
             android:ems="10" />
-
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_height="wrap_content"
-            android:layout_width="0dip"
-            android:layout_weight="0.25"
-            android:text="Search"/>
-
-        <Button
-            android:id="@+id/filterButton"
-            android:layout_height="wrap_content"
-            android:layout_width="0dip"
-            android:layout_weight="0.1"
-            android:drawableLeft="@drawable/filter_icon"
-            android:drawablePadding="2dip"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -56,7 +111,7 @@
                 style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:max="9"
+                android:max="8"
                 android:progress="3"
                 android:layout_weight=".1"/>
 
@@ -271,35 +326,180 @@
         </LinearLayout>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/start"
+    <!--Routing function-->
+    <LinearLayout
+        android:id="@+id/routeMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Start"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:visibility="gone">
+        <EditText
+            android:id="@+id/start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:ems="10"
+            android:hint="Enter Starting Point" />
 
-    <EditText
-        android:id="@+id/end"
+        <EditText
+            android:id="@+id/end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:ems="10"
+            android:hint="Enter Destination" />
+    </LinearLayout>
+
+    <!--compare function xml-->
+    <LinearLayout
+        android:id="@+id/compareMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="End Route"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:weightSum="1">
 
-    <Button
-        android:id="@+id/route_button"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/compareBox1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:ems="10"
+            android:hint="Enter First Suburb"/>
+
+        <EditText
+            android:id="@+id/compareBox2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:ems="10"
+            android:hint="Enter Second Suburb"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/graphs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/labelLineChart"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Route"
         android:textAlignment="center"
-        android:visibility="gone"/>
+        android:textColor="@color/md_black_1000"
+        android:textSize="20dp"
+        android:layout_marginTop="20dp"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:paddingBottom="60dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/labelBarChart1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/md_black_1000" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart1"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/labelBarChart2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/md_black_1000" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart2"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--<com.github.mikephil.charting.charts.PieChart-->
+        <!--android:id="@+id/pieChartSuburb1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="350dp"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:layout_marginEnd="20dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<com.github.mikephil.charting.charts.PieChart-->
+        <!--android:id="@+id/pieChartSuburb2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="350dp"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:layout_marginEnd="20dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    </LinearLayout>
+    </ScrollView>
 
     <org.osmdroid.views.MapView
+        android:visibility="visible"
         android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="match_parent" />
 
+
 </LinearLayout>
+</FrameLayout>

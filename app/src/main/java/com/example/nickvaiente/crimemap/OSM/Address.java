@@ -1,37 +1,66 @@
 package com.example.nickvaiente.crimemap.OSM;
-
-/**
- * Created by Tae's Puter on 7/05/2017.
- */
-
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+        "road",
+        "suburb",
         "city",
+        "county",
         "state",
+        "postcode",
         "country",
         "country_code"
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
-
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("road")
+    private String road;
+    @JsonProperty("suburb")
+    private String suburb;
     @JsonProperty("city")
     private String city;
+    @JsonProperty("county")
+    private String county;
     @JsonProperty("state")
     private String state;
+    @JsonProperty("postcode")
+    private String postcode;
     @JsonProperty("country")
     private String country;
     @JsonProperty("country_code")
     private String countryCode;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    @JsonProperty("road")
+    public String getRoad() {
+        return road;
+    }
+
+    @JsonProperty("road")
+    public void setRoad(String road) {
+        this.road = road;
+    }
+
+    @JsonProperty("suburb")
+    public String getSuburb() {
+        return suburb;
+    }
+
+    @JsonProperty("suburb")
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
+    }
 
     @JsonProperty("city")
     public String getCity() {
@@ -43,6 +72,16 @@ public class Address {
         this.city = city;
     }
 
+    @JsonProperty("county")
+    public String getCounty() {
+        return county;
+    }
+
+    @JsonProperty("county")
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
     @JsonProperty("state")
     public String getState() {
         return state;
@@ -51,6 +90,16 @@ public class Address {
     @JsonProperty("state")
     public void setState(String state) {
         this.state = state;
+    }
+
+    @JsonProperty("postcode")
+    public String getPostcode() {
+        return postcode;
+    }
+
+    @JsonProperty("postcode")
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
 
     @JsonProperty("country")

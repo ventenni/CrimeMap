@@ -5,15 +5,18 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.MotionEvent;
 
 import com.example.nickvaiente.crimemap.R;
 
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.attr.padding;
 import static com.example.nickvaiente.crimemap.MainActivity.getAppContext;
 import static java.security.AccessController.getContext;
 
@@ -38,6 +41,7 @@ public class Cluster {
         this.greenIcon = context.getDrawable(R.mipmap.new_marker_logo_green);
         this.yellowIcon = context.getDrawable(R.mipmap.new_marker_logo_yellow);
         this.redIcon = context.getDrawable(R.mipmap.new_marker_logo_red);
+        crimeMarkers.setMaxClusteringZoomLevel(25);
     }
 
     public void addMarker(Marker marker) {
