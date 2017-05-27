@@ -1,6 +1,7 @@
 package com.example.nickvaiente.crimemap.OSM;
 
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -8,12 +9,24 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.nickvaiente.crimemap.MainActivity;
+import com.example.nickvaiente.crimemap.OSM.SuburbBoundary.SuburbBoundary;
 import com.example.nickvaiente.crimemap.R;
 
+import org.xml.sax.Parser;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.fasterxml.jackson.databind.*;
+
+import static com.example.nickvaiente.crimemap.MainActivity.context;
 import static com.example.nickvaiente.crimemap.MainActivity.getAppContext;
 import static com.example.nickvaiente.crimemap.MainActivity.showToast;
 
@@ -23,10 +36,11 @@ import static com.example.nickvaiente.crimemap.MainActivity.showToast;
 
 public class OpenStreetMap extends Activity{
     private static OpenStreetMap instance = new OpenStreetMap();
-    private String ADDRESS_URL = "http://nominatim.openstreetmap.org/search/%s Queensland?countrycodes=AU&format=json&addressdetails=1&limit=1"; //&polygon=1";
+    private String ADDRESS_URL = "http://nominatim.openstreetmap.org/search/%s Queensland?countrycodes=AU&format=json&addressdetails=1&limit=1";//&polygon=1";
 //    private String ADDRESS_URL = "http://nominatim.openstreetmap.org/search?q=%s+Queensland&format=json&polygon=1&addressdetails=1";
     private LocationInfo result;
     private List<Address> suggestions = new ArrayList<>();
+    private SuburbBoundary boundary;
 
     public OpenStreetMap() {
         this.result = null;
@@ -121,11 +135,24 @@ public class OpenStreetMap extends Activity{
         }
     }
 
-
-
     public void resetInstance(){
         this.result = null;
     }
+
+//    public void loadSuburbBoundary(AssetManager assetManager){
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        try {
+//            InputStream inputStream = assetManager.open("qldSuburbBoundary.json");
+//            boundary = mapper.readValue(inputStream, SuburbBoundary.class);
+//        }
+//        catch(FileNotFoundException e){
+//            Log.i("Print","FileNotFoundException in loadSuburbBoundary - OpenStreetMap");
+//        }
+//        catch(IOException e){
+//            Log.i("Print","IOException in loadSuburbBoundary - OpenStreetMap");
+//        }
+//    }
 
 
 }

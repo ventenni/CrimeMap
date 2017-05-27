@@ -1,15 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.nickvaiente.crimemap.graphical.pages.HelpLayoutActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="@android:dimen/thumbnail_height"
-        android:contentDescription="@string/crime_map_logo"
-        app:srcCompat="@drawable/smaller_crimemap_logo" />
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.example.nickvaiente.crimemap.graphical.pages.HelpLayoutActivity">
+
+        <ScrollView
+            android:id="@+id/howToMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/crime_map_logo"
+                app:srcCompat="@drawable/smaller_crimemap_logo" />
+
+        </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/howToBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/howToMenu"
+            android:layout_alignBottom="@id/howToMenu"
+            app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+            android:layout_margin="16dp"/>
+
+    </RelativeLayout>

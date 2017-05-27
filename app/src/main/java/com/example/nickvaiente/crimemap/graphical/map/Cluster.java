@@ -36,11 +36,11 @@ public class Cluster {
         this.crimeMarkers = new RadiusMarkerClusterer(context);
 //        this.clusterIcon = ((BitmapDrawable) clusterIconD).getBitmap();
 //        this.crimeMarkers.setIcon(clusterIcon);
-        this.crimeMarkers.getTextPaint().setTextSize(25 * context.getResources().getDisplayMetrics().density);
+        this.crimeMarkers.getTextPaint().setTextSize(12 * context.getResources().getDisplayMetrics().density);
         this.markers = new ArrayList<Marker>();
-        this.greenIcon = context.getDrawable(R.mipmap.new_marker_logo_green);
-        this.yellowIcon = context.getDrawable(R.mipmap.new_marker_logo_yellow);
-        this.redIcon = context.getDrawable(R.mipmap.new_marker_logo_red);
+        this.greenIcon = context.getDrawable(R.mipmap.green);
+        this.yellowIcon = context.getDrawable(R.mipmap.yellow);
+        this.redIcon = context.getDrawable(R.mipmap.red);
         crimeMarkers.setMaxClusteringZoomLevel(25);
     }
 

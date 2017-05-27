@@ -32,6 +32,7 @@ import com.mikepenz.materialize.color.Material;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,10 +46,17 @@ public class MainGraphs {
     public void createBarChart(BarChart barChart, Compare compare) {
 
         Map<String,String[]> offenceType = getGraphData(compare);
+        String[] keys = {"1", "8", "14", "17", "21", "27", "28", "29", "30", "35", "39", "45", "47", "51", "52", "54", "55"};
+        for(String key : keys){
+            if (Integer.parseInt(offenceType.get(key)[1]) == 0){
+                offenceType.remove(key);
+            }
+        }
+
         //Bar Chart//
         ArrayList barData = new ArrayList();
         int index = 0;
-        String[] offenceName = new String[17];
+        String[] offenceName = new String[offenceType.size()];
         for (Map.Entry<String,String[]> offence: offenceType.entrySet()){
             offenceName[index] = offence.getValue()[0];
             barData.add(new BarEntry((float)index, Float.parseFloat(offence.getValue()[1])));
@@ -72,9 +80,10 @@ public class MainGraphs {
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setTextSize(8f);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(17);
         xAxis.setLabelRotationAngle(-90);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(offenceName));
-        barChart.setExtraBottomOffset(100f);
 
         // Graph Settings
         Description desc = new Description();
@@ -85,8 +94,8 @@ public class MainGraphs {
         barChart.setDragEnabled(true);
         barChart.setDoubleTapToZoomEnabled(true);
         barChart.setDrawValueAboveBar(true);
-        barChart.getXAxis().setLabelCount(17);
         barChart.setEnabled(true);
+        barChart.setExtraBottomOffset(100f);
         barChart.invalidate();
     }
 
@@ -95,45 +104,20 @@ public class MainGraphs {
         // Populate Dataillkj
 
         Map<String,String[]> offenceType = getGraphData(compare);
-
-        float[] yData = {
-                Float.parseFloat(offenceType.get("1")[1]),
-                Float.parseFloat(offenceType.get("8")[1]),
-                Float.parseFloat(offenceType.get("14")[1]),
-                Float.parseFloat(offenceType.get("17")[1]),
-                Float.parseFloat(offenceType.get("21")[1]),
-                Float.parseFloat(offenceType.get("27")[1]),
-                Float.parseFloat(offenceType.get("28")[1]),
-                Float.parseFloat(offenceType.get("29")[1]),
-                Float.parseFloat(offenceType.get("30")[1]),
-                Float.parseFloat(offenceType.get("35")[1]),
-                Float.parseFloat(offenceType.get("39")[1]),
-                Float.parseFloat(offenceType.get("45")[1]),
-                Float.parseFloat(offenceType.get("47")[1]),
-                Float.parseFloat(offenceType.get("51")[1]),
-                Float.parseFloat(offenceType.get("52")[1]),
-                Float.parseFloat(offenceType.get("54")[1]),
-                Float.parseFloat(offenceType.get("55")[1])
-        };
-        String[] xData = {
-                offenceType.get("1")[0],
-                offenceType.get("8")[0],
-                offenceType.get("14")[0],
-                offenceType.get("17")[0],
-                offenceType.get("21")[0],
-                offenceType.get("27")[0],
-                offenceType.get("28")[0],
-                offenceType.get("29")[0],
-                offenceType.get("30")[0],
-                offenceType.get("35")[0],
-                offenceType.get("39")[0],
-                offenceType.get("45")[0],
-                offenceType.get("47")[0],
-                offenceType.get("51")[0],
-                offenceType.get("52")[0],
-                offenceType.get("54")[0],
-                offenceType.get("55")[0]
-        };
+        String[] keys = {"1", "8", "14", "17", "21", "27", "28", "29", "30", "35", "39", "45", "47", "51", "52", "54", "55"};
+        for(String key : keys){
+            if (Integer.parseInt(offenceType.get(key)[1]) == 0){
+                offenceType.remove(key);
+            }
+        }
+        float[] yData = new float[offenceType.size()];
+        String[] xData = new String[offenceType.size()];
+        int index = 0;
+        for (Map.Entry<String, String[]> each: offenceType.entrySet()){
+            xData[index] = each.getValue()[0];
+            yData[index] = Float.parseFloat(each.getValue()[1]);
+            index++;
+        }
 
         ArrayList<PieEntry> yAxis = new ArrayList<>();
         ArrayList<String> xAxis = new ArrayList<>();
@@ -169,7 +153,6 @@ public class MainGraphs {
         ArrayList<Entry> lineData1 = new ArrayList();
         ArrayList<Entry> lineData2 = new ArrayList();
         String[] dates = new String[compare1.getDates().size()];
-
 
         int count = 0;
         for (String key : compare1.getSortedKeys()) {
@@ -226,6 +209,57 @@ public class MainGraphs {
 //        crime.(Color.RED - 2);
 //        crime2.setColor(Color.BLUE);
 //        crime2.setCircleColor(Color.BLUE - 2);
+        lineChart.setPinchZoom(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setDoubleTapToZoomEnabled(true);
+        lineChart.setEnabled(true); //
+        lineChart.invalidate();
+    }
+
+    public void createLineChart(final LineChart lineChart, Compare compare1) {
+
+        //Line Chart//
+        // Set Data
+        ArrayList<Entry> lineData1 = new ArrayList();
+        String[] dates = new String[compare1.getDates().size()];
+
+        int count = 0;
+        for (String key : compare1.getSortedKeys()) {
+            Integer value = compare1.getDates().get(key);
+            lineData1.add((new Entry((float) count, (float) value)));
+            dates[count] = key;
+            count++;
+        }
+
+        LineDataSet crime = new LineDataSet(lineData1, compare1.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb());
+        crime.setColor(Color.BLUE);
+        crime.setCircleColor(Color.BLUE);
+
+//        String[] legendSuburbs = {compare1.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb(), compare2.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb()};
+        lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(dates));
+//        lineChart.getLegend().setEnabled(false);
+        lineChart.setExtraBottomOffset(30f);
+
+        // Graph Chart
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(crime);
+        LineData Data = new LineData(dataSets);
+        lineChart.setData(Data);
+
+        // XAxis Settings
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setTextSize(10f);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelRotationAngle(-90);
+
+        // Graph Settings
+        Description desc = new Description(); //
+        desc.setText("Number of Offences");     // Set Chart Description
+        lineChart.setDescription(desc);        //
         lineChart.setPinchZoom(true);
         lineChart.setDragEnabled(true);
         lineChart.setDoubleTapToZoomEnabled(true);

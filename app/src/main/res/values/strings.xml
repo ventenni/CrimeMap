@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name"> CrimeMap </string>
     <!--Side Menu Titles-->
     <string name="Home"> Home </string>
     <string name="Compare"> Compare </string>
@@ -8,8 +9,20 @@
     <string name="Help"> Help </string>
 
 
-    <string name="about_content"> CrimeMap description and
-        why/where it was created. </string>
+    <!--About Page Content-->
+    <string name="crimeMapDetails">CrimeMap is an interactive app that allows users to view real
+        crime data supplied from the Queensland Police Service. </string>
+
+    <string name="why">The aim is to allow users to be as informed as possible while they\'re looking
+        for new areas to relocate in Queensland.</string>
+
+    <string name="developed">Developed by FouraTech.</string>
+
+    <string name="sponsored">Sponsored by Stephanie Conroy.</string>
+
+    <string name="data">Data provided by Queensland Police Service and Open Street Maps.</string>
+
+    <!--Content Page Content-->
     <string name="help_content"> Help Page </string>
 
     <!--Crime Map Logo String-->

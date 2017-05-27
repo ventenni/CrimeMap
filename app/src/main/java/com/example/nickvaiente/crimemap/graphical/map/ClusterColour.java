@@ -24,9 +24,9 @@ public class ClusterColour extends RadiusMarkerClusterer {
 
     public ClusterColour(Context context) {
         super(context);
-        this.greenIcon = context.getDrawable(R.mipmap.new_marker_logo_green);
-        this.yellowIcon = context.getDrawable(R.mipmap.new_marker_logo_yellow);
-        this.redIcon = context.getDrawable(R.mipmap.new_marker_logo_red);
+        this.greenIcon = context.getDrawable(R.mipmap.green);
+        this.yellowIcon = context.getDrawable(R.mipmap.yellow);
+        this.redIcon = context.getDrawable(R.mipmap.red);
     }
 
     @Override public Marker buildClusterMarker(StaticCluster cluster, MapView mapView) {

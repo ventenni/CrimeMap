@@ -3,6 +3,8 @@ package com.example.nickvaiente.crimemap.OSM;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.nickvaiente.crimemap.MainActivity;
+
 import org.springframework.web.client.RestTemplate;
 
 

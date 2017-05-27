@@ -1,16 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.nickvaiente.crimemap.graphical.pages.AboutLayoutActivity">
+    tools:context="com.example.nickvaiente.crimemap.graphical.pages.HelpLayoutActivity">
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <ScrollView
+        android:id="@+id/howToMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="149dp"
+                android:contentDescription="@string/crime_map_logo"
+                app:srcCompat="@drawable/smaller_crimemap_logo" />
+
+            <TextView
+                android:id="@+id/details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="7dp"
+                android:text="@string/crimeMapDetails"/>
+
+            <TextView
+                android:id="@+id/why"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="26dp"
+                android:text="@string/why"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="26dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/developed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="26dp"
+                android:text="@string/developed"/>
+
+            <TextView
+                android:id="@+id/sponsored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="13dp"
+                android:text="@string/sponsored"/>
+
+            <TextView
+                android:id="@+id/data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="13dp"
+                android:text="@string/data"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/aboutBackButton"
         android:layout_width="wrap_content"
-        android:layout_height="192dp"
-        android:contentDescription="@string/crime_map_logo"
-        app:srcCompat="@drawable/smaller_crimemap_logo" />
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/howToMenu"
+        android:layout_alignBottom="@id/howToMenu"
+        app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+        android:layout_margin="16dp"/>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
