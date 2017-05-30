@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.nickvaiente.crimemap.MainActivity;
-import com.example.nickvaiente.crimemap.OSM.SuburbBoundary.SuburbBoundary;
 import com.example.nickvaiente.crimemap.R;
 
 import org.xml.sax.Parser;
@@ -40,7 +39,6 @@ public class OpenStreetMap extends Activity{
 //    private String ADDRESS_URL = "http://nominatim.openstreetmap.org/search?q=%s+Queensland&format=json&polygon=1&addressdetails=1";
     private LocationInfo result;
     private List<Address> suggestions = new ArrayList<>();
-    private SuburbBoundary boundary;
 
     public OpenStreetMap() {
         this.result = null;

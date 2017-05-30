@@ -453,13 +453,17 @@ public class MainActivity extends Activity {
         Log.i("Print", "After OSM perform");
 
         if (OpenStreetMap.getInstance().getResult() != null) {
-            searchBox.setText(searchInput);
-            latitude = OpenStreetMap.getInstance().getResult().getLat();
-            longitude = OpenStreetMap.getInstance().getResult().getLon();
-            String suburb = OpenStreetMap.getInstance().getResult().getAddress().getSuburb();
-            List<List<String>> polygonPoints = OpenStreetMap.getInstance().getResult().getPolygonpoints();
-            //pass bounding box coords to the function that displays the suburb perimeter
-            displayMarkers(map);
+            if (OpenStreetMap.getInstance().getResult().getAddress().getState().equalsIgnoreCase("QLD") || OpenStreetMap.getInstance().getResult().getAddress().getState().equalsIgnoreCase("queensland")) {
+                searchBox.setText(searchInput);
+                latitude = OpenStreetMap.getInstance().getResult().getLat();
+                longitude = OpenStreetMap.getInstance().getResult().getLon();
+                String suburb = OpenStreetMap.getInstance().getResult().getAddress().getSuburb();
+                List<List<String>> polygonPoints = OpenStreetMap.getInstance().getResult().getPolygonpoints();
+                //pass bounding box coords to the function that displays the suburb perimeter
+                displayMarkers(map);
+            }else{
+                showToast("Enter Queensland Suburb", 1);
+            }
 
         } else {
             showToast("No Results. Timed Out :(", 1);
