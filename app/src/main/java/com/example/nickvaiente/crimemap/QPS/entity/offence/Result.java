@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+//  Stores the all the offeces that occur within a certain Meshblock ID
+//  The json object containing the offence details are retrieved from QPS.
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonPropertyOrder({
         "MeshBlockId",

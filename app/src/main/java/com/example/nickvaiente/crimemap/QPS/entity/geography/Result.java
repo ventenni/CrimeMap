@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.HashMap;
 import java.util.Map;
 
-//  Store the geography details for a searched location.
+//  Store the QPS specific geography details for a searched location.
 //  The json object containing the geography details are retrieved form QPS.
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({

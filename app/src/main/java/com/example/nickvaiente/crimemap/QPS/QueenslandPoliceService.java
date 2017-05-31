@@ -15,9 +15,11 @@ import static java.lang.String.format;
  * Created by Tae's Puter on 9/05/2017.
  */
 
+
+// creating a singleton instance so that other classes can access these variables as task are
+// completed asynchronously
 public class QueenslandPoliceService{
     private static QueenslandPoliceService instance = new QueenslandPoliceService();
-    private static final String LOCATION_URL = "https://data.police.qld.gov.au/api/boundary?latitude=%s&longitude=%s&maxresults=%s";
     private Success success;
     private OffenceBoundary offenceBoundary;
 

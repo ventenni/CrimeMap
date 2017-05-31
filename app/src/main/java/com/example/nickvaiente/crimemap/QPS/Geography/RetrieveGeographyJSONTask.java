@@ -16,20 +16,16 @@ import static java.lang.String.format;
 
 public class RetrieveGeographyJSONTask
 {
-    private static final String NAME_URL = "https://data.police.qld.gov.au/api/boundary?name=%s&returngeometry=true&maxresults=%s";
-    private static final String LOCATION_URL = "https://data.police.qld.gov.au/api/boundary?latitude=%d&longitude=%d&maxresults=";
-    public static final String OFFENCE_URL = "https://data.police.qld.gov.au/api/qpsmeshblock?boundarylist=1_6989,1_6428&startdate=1364466223&enddate=1372415023&offences=8,14";
-
     private RestTemplate restTemplate;
 
     public void doInBackground(String... params) {
         restTemplate = new RestTemplate(true);
         try {
-
-//          Performs API call to the QPS servers
+//          Performs API call to the QPS servers and put it directly into a Success object
             Success success = restTemplate.getForObject(params[0], Success.class);
 
-//          Storing the result in an object in the geography/success class.
+//          Storing the result in the QPS singleton instance success variable to be accessed by
+//          other classes.
             QueenslandPoliceService.getInstance().setSuccess(success);
 
         } catch(Exception ex) {

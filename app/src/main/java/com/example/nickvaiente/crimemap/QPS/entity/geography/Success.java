@@ -22,6 +22,8 @@ import java.util.Map;
     "Result",
     "ResultCount"
 })
+//  Store the details even if some items are missing or there are attributes in the JSON that are
+//  not specified in the in the class below
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Success {
     @JsonIgnoreProperties(ignoreUnknown = true)
