@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.HashMap;
 import java.util.Map;
 
+//  Store the offence information for a single offence.
+//  The json object containing the offence details are retrieved form QPS.
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonPropertyOrder({
         "QpsOffenceId",

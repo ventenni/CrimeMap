@@ -38,12 +38,14 @@ public class Map {
     MapView mapView;
     List<GeoPoint> points = new ArrayList<GeoPoint>();
 
+    // Initializing the mapview and passes coordinates to setLocation()
     public Map(MapView mapView, double latitude, double longitude) {
         this.mapView = mapView;
         setLocation(latitude, longitude);
 
     }
 
+    // Creates the map based on coordinates (default or suburb entered)
     public void setLocation(double latitude, double longitude){
 
         mapView.setTileSource(TileSourceFactory.MAPNIK);
@@ -63,6 +65,7 @@ public class Map {
         mapView.invalidate();
     }
 
+    // Adds the offence markers to the map based on location
     public void addMarkers() {
         if (QueenslandPoliceService.getInstance().getOffenceBoundary() != null) {
 
@@ -87,9 +90,13 @@ public class Map {
             offenceType.put("true", "Solved");
             offenceType.put("false", "Unsolved");
 
+//        Assigning offence types to different marker colours (eg, 1 = Homicide)
             int[] redMarker = {1,8,27};
             int[] yellowMarker = {14,17,21,28,35,45,51};
 
+
+//         Gathers offences for suburb and assigns them to indiviual markers. If there are individual markers
+//         at the same coordinates they are placed into a single cluster marker.
             for (Result result : QueenslandPoliceService.getInstance().getOffenceBoundary().getResult()) {
                 Cluster cluster = new Cluster(MainActivity.getAppContext());
                 String geometryWKT = result.getGeometryWKT();
@@ -102,6 +109,8 @@ public class Map {
                     //GeoPoint testStart = new GeoPoint(testLat, testLon);
                     GeoPoint point = new GeoPoint(latitude, longitude);
 
+
+//                Creates new individual marker
                     Marker newMark = new Marker(mapView);
                     if (ArrayUtils.contains(redMarker, offence.getQpsOffenceCode())){
                         newMark.setIcon(getAppContext().getResources().getDrawable(R.mipmap.blue_red, null));
@@ -112,6 +121,8 @@ public class Map {
                     }
                     newMark.setPosition(point);
 //                    newMark.setInfoWindow(null);
+//
+//                Adds offence info to marker bubble
                     newMark.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
                     newMark.setTitle("Offence: " + offenceType.get(offence.getQpsOffenceCode() + ""));
                     newMark.setSnippet("Status: " + offenceType.get(offence.getSolved() + ""));
@@ -146,6 +157,8 @@ public class Map {
         }
     }
 
+
+//  Outline the suburb perimeter
     public void displayPerimeter(String geometryWKT){
 //        String geometryWKT = QueenslandPoliceService.getInstance().getOffenceBoundary().getResult().get(0).getGeometryWKT();
         int size = (geometryWKT.length() - geometryWKT.replaceAll(" ", "").length()) / 2;

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--<FrameLayout-->
-    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context=".MainActivity">-->
+<!--MAIN PAGE LAYOUT-->
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -600,7 +595,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_alignRight="@id/mapImage"
-            android:layout_alignBottom="@id/mapImage">
+            android:layout_alignBottom="@id/mapImage"
+            android:id="@+id/linearLayout">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/gpsButton"
@@ -619,6 +615,20 @@
                 android:layout_marginBottom="16dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/osm_copyright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="3dp"
+            android:contentDescription="Required OSM copyright"
+            android:text="@string/osm_require"
+            android:textAlignment="center"
+            android:textColor="@color/md_black_1000"
+            android:textSize="8sp"
+            tools:text="@string/osm_require" />
 
 
     </RelativeLayout>

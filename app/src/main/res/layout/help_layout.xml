@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--HELP PAGE LAYOUT-->
+
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,22 +15,257 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageView"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/crime_map_logo"
-                app:srcCompat="@drawable/smaller_crimemap_logo" />
+                android:orientation="vertical"
+                android:background="@color/md_white_1000"
+                android:weightSum="1">
 
+                <TextView
+                    android:id="@+id/page_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/main_help"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="30sp"
+                    tools:text="@string/main_help" />
+
+                <TextView
+                    android:id="@+id/landing_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/landing_head"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    tools:text="@string/landing_head" />
+
+                <ImageView
+                    android:id="@+id/landing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.10"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/landing_text"
+                    app:srcCompat="@drawable/landingscreen" />
+
+                <TextView
+                    android:id="@+id/landing_how"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/landing_how"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    tools:text="@string/landing_how" />
+
+                <TextView
+                    android:id="@+id/filter_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/filter_head"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    tools:text="@string/filter_head" />
+
+                <ImageView
+                    android:id="@+id/filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.10"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/filter_text"
+                    app:srcCompat="@drawable/filteroptions" />
+
+                <TextView
+                    android:id="@+id/filter_how"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/filter_how"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    tools:text="@string/filter_how" />
+
+                <TextView
+                    android:id="@+id/offen_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/offence_head"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    tools:text="@string/offence_head" />
+
+                <ImageView
+                    android:id="@+id/offence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.10"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/offence_text"
+                    app:srcCompat="@drawable/offenceinfo" />
+
+                <TextView
+                    android:id="@+id/offence_how"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/offence_how"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    tools:text="@string/offence_how" />
+
+                <TextView
+                    android:id="@+id/compare_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/compare_head"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    tools:text="@string/compare_head" />
+
+                <ImageView
+                    android:id="@+id/compare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_weight="0.10"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/compare_text"
+                    app:srcCompat="@drawable/compareresult" />
+
+                <TextView
+                    android:id="@+id/compare_how"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/compare_how"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    tools:text="@string/compare_how" />
+
+                <TextView
+                    android:id="@+id/individuals"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/individual_header"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    tools:text="@string/individual_header" />
+
+                <ImageView
+                    android:id="@+id/individual_markers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.10"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="Individual offence markers"
+                    app:srcCompat="@drawable/individuals" />
+
+                <TextView
+                    android:id="@+id/individual_marks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="13dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/individual_markers"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    tools:text="@string/individual_markers" />
+
+                <TextView
+                    android:id="@+id/clusters"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/cluster_header"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="24sp"
+                    tools:text="@string/cluster_header" />
+
+                <ImageView
+                    android:id="@+id/cluster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.10"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/clusters" />
+
+                <TextView
+                    android:id="@+id/cluster_marks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="55dp"
+                    android:layout_weight="0.10"
+                    android:text="@string/cluster_markers"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    tools:text="@string/cluster_markers" />
+            </LinearLayout>
         </ScrollView>
 
-        <android.support.design.widget.FloatingActionButton
+    <android.support.design.widget.FloatingActionButton
             android:id="@+id/howToBackButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@id/howToMenu"
+            android:layout_alignEnd="@id/howToMenu"
             android:layout_alignBottom="@id/howToMenu"
             app:srcCompat="@drawable/ic_arrow_back_white_24dp"
             android:layout_margin="16dp"/>
 
-    </RelativeLayout>
+</RelativeLayout>

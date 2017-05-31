@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//  Store all the offences for a location eg. all the offences in Southport
+//  The json object containing the geography details are retrieved form QPS.
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @JsonPropertyOrder({
         "Success",

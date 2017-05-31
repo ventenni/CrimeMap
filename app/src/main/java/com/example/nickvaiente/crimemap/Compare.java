@@ -41,6 +41,7 @@ public class Compare {
         this.locationResult = locationResult;
     }
 
+    //  Time increments to display on graphs eg. 5 yrs will be displayed in monthly increments
     public void plotData() {
         Map<String, Integer> dates;
 
@@ -67,6 +68,8 @@ public class Compare {
         }
     }
 
+
+    // Retrieves offences that are within the timeframe specified in the filter.
     private void getOffenceDates(int endIndex) {
         dates = new HashMap();
         for (Result result : offenceResult.getResult()) {

@@ -31,6 +31,8 @@ public class QpsApiAccess extends AsyncTask<String,Void,Void>
 
     int maxResults = 3;
 
+
+//   Getting all of the offences from QPS for a given location.
     @Override
     protected Void doInBackground(String... params) {
         if(android.os.Debug.isDebuggerConnected())
@@ -52,6 +54,7 @@ public class QpsApiAccess extends AsyncTask<String,Void,Void>
         String offenceUrl = format(OFFENCE_URL, boundaryList, startDate, endDate, filters);
 
         RetrieveOffenceJSONTask retrieveOffenceJSONTask = new RetrieveOffenceJSONTask();
+
         //Gets success results - including polygon boundary for an offence
         retrieveOffenceJSONTask.doInBackground(offenceUrl);
 

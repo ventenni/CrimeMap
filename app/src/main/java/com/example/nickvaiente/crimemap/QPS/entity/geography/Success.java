@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+//  Store the confirmation details for a searched location.
+//  The json object containing the confirmation details are retrieved form QPS.
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "Success",
@@ -29,7 +30,7 @@ public class Success {
     @JsonProperty("Message")
     private Object message;
     @JsonProperty("Result")
-    private List<Result> result = null;
+    private List<Result> result = null; //  Contains matches based on area eg. suburb, local government area etc.
     @JsonProperty("ResultCount")
     private Integer resultCount;
     @JsonIgnore

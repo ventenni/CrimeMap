@@ -61,9 +61,11 @@ import static android.widget.Toast.LENGTH_SHORT;
 public class MainActivity extends Activity {
 
     public static final int NUMBER_OF_CRIMES = 17;
-    final String mapquestApi = "EH5HAxcHJmAN9sf02T6PJA2VDCJ9Tgru"; // MAKE PRIVATE AS WELL?
 
     public static Context context;
+
+    public static Activity thisActivity;
+
     private com.mikepenz.materialdrawer.Drawer slideMenu;
     private String searchInput;
     private LocationManager locationManager;
@@ -79,7 +81,9 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        try {
-            if (Build.VERSION.SDK_INT >= 23) {
+
+        // Adnroid 6 and above, prompts user with permissions (GPS, Local Storage) when first using the app.
+        if (Build.VERSION.SDK_INT >= 23) {
                 int timer;
                 if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Log.i("permission" + " 0", "tom");
@@ -92,27 +96,27 @@ public class MainActivity extends Activity {
 //                    }
                 }
 
-                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Log.i("permission" + " 0", "tom");
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-//                    timer = 0;
-//                    while (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && timer < 10) {
-//                        TimeUnit.SECONDS.sleep(1);
-//                        timer++;
-//                    }
-                }
-
-                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    Log.i("permission" + " 0", "tom");
-                } else {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-//                    timer = 0;
-//                    while (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && timer < 10) {
-//                        TimeUnit.SECONDS.sleep(1);
-//                        timer++;
-//                    }
-                }
+//                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    Log.i("permission" + " 0", "tom");
+//                } else {
+//                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+////                    timer = 0;
+////                    while (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && timer < 10) {
+////                        TimeUnit.SECONDS.sleep(1);
+////                        timer++;
+////                    }
+//                }
+//
+//                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                    Log.i("permission" + " 0", "tom");
+//                } else {
+//                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+////                    timer = 0;
+////                    while (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && timer < 10) {
+////                        TimeUnit.SECONDS.sleep(1);
+////                        timer++;
+////                    }
+//                }
 
                 if (checkSelfPermission(Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
                     Log.i("permission" + " 0", "tom");
@@ -131,14 +135,20 @@ public class MainActivity extends Activity {
 //        }
 //        OpenStreetMap.getInstance().loadSuburbBoundary(getAssets());
         setContentView(R.layout.activity_main);
-        MainActivity.context = getApplicationContext();
+
+        MainActivity.context = getApplicationContext(); //under setContentView
+        MainActivity.thisActivity = this;
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         //    public static Context context;
 
+
+        // Default filter settings.
         long defaultTimePeriod = 15778463;
         String defaultOffences = "1,8,14,17,21,27,28,29,30,35,39,45,47,51,52,54,55";
         updateGPS();
 
+        // Widgets used by the application
         final EditText searchBox = (EditText) findViewById(R.id.searchBox);
         final ImageButton toggleButton = (ImageButton) findViewById(R.id.toggleButton);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -156,17 +166,20 @@ public class MainActivity extends Activity {
         final FloatingActionButton statisticsBackButton = (FloatingActionButton) findViewById(R.id.statisticsBackButton);
         final FloatingActionButton gpsButton = (FloatingActionButton) findViewById(R.id.gpsButton);
 
+        // Creates the map on startup
         mapView = (MapView) findViewById(R.id.mapImage);
         mapView.getOverlays().clear();
         final Map map = new Map(mapView, Double.parseDouble(latitude), Double.parseDouble(longitude));
 
+        // Gets offences for default location
         QueenslandPoliceService.getInstance().setOffenceTypes(defaultOffences);
         QueenslandPoliceService.getInstance().setTimePeriod(defaultTimePeriod);
         displayMarkers(map);
 
-//        addingWaypoints(mapView, mapquestApi, startPoint);
+        // Creates the side menu
         createDrawer();
 
+        // Listener for the hamburger menu button
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +187,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        // Searchbox listener
         searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
@@ -186,15 +200,18 @@ public class MainActivity extends Activity {
             }
         });
 
+        // Search button listener
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.i("Print", "Start searchButton onClickListerner");
                 searchBox.clearFocus();
                 performSearch(map);
+                mapView.requestFocus();
                 Log.i("Print", "End searchButton onClickListerner");
             }
         });
 
+        // Filter button listener.
         filterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 slideMenu.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -203,11 +220,14 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        // Submit filter settings listener
         submitFilterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             String offenceTypes = "";
 
+                // Checkboxes for offence types in filter
             CheckBox[] checkBoxes = new CheckBox[NUMBER_OF_CRIMES];
             checkBoxes[0] = (CheckBox) findViewById(R.id.checkBox1);   //Homicide R
             checkBoxes[1] = (CheckBox) findViewById(R.id.checkBox8);   //Assault R
@@ -253,16 +273,10 @@ public class MainActivity extends Activity {
             } else {
                 showToast("Please select an offence type.", 0);
             }
-
-
-                //Hide the search box and search button when user clicks the filter button
-//            if (filterMenu.getVisibility() == View.VISIBLE) {
-//                filterMenu.setVisibility(View.GONE);
-//                searchMenu.setVisibility(View.VISIBLE);
-//            }
         }
         });
 
+        // Time period slider listener
         timePeriod.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -274,6 +288,7 @@ public class MainActivity extends Activity {
                 // TODO Auto-generated method stub
             }
 
+            // When slider is changed the setting is stored.
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
                 TextView labelTimePeriod = (TextView) findViewById(R.id.labelTimePeriod);
@@ -288,12 +303,15 @@ public class MainActivity extends Activity {
             }
         });
 
+        // Compare suburbs button listener.
         compareButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 performCompare();
             }
         });
 
+
+        // Homepage statistics button listener
         statisticsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -320,13 +338,16 @@ public class MainActivity extends Activity {
 
                     BarChart homeBarChartView = (BarChart) findViewById(R.id.homeBarChart);
                     homeBarChart.createBarChart(homeBarChartView, homeBarChartStats);
-                }
-                catch (NullPointerException e){
+                } catch (NullPointerException e) {
+
+                } catch (IndexOutOfBoundsException e) {
 
                 }
             }
         });
 
+
+        // Stats back button listener.
         statisticsBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -334,6 +355,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        // GPS button listener
         gpsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -344,39 +366,7 @@ public class MainActivity extends Activity {
 
     }
 
-    public static Context getAppContext() {
-        return MainActivity.context;
-    }
-
-    public static void showToast(String message, int duration) {
-        //Display toast message. LENGTH_SHORT = 0, LENGTH_LONG = 1.
-        if (duration < 1) {
-            Toast.makeText(context, message, LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-//        This adds the node icons to each new road for the route.
-//        Add a node icon to mipmap folder and use that for node markers
-//        Drawable nodeIcon = getResources().getDrawable(R.mipmap.marker, null);
-//        for (int i = 0; i < road.mNodes.size(); i++) {
-//            RoadNode node = road.mNodes.get(i);
-//            Marker nodeMarker = new Marker(mapView);
-//            nodeMarker.setPosition(node.mLocation);
-//            nodeMarker.setIcon(nodeIcon);
-//            nodeMarker.setTitle("Step " + i);
-////          Below code adds travel instructions to each marker
-//            nodeMarker.setSnippet(node.mInstructions);
-//            nodeMarker.setSubDescription(Road.getLengthDurationText(this, node.mLength, node.mDuration));
-//            Drawable icon = getResources().getDrawable(R.mipmap.marker, null);
-//            nodeMarker.setImage(icon);
-//            mapView.getOverlays().add(nodeMarker);
-//        }
-
-    //        mapView.invalidate();
-
+    // Method that creates the side menu that leads to different pages
     private void createDrawer() {
         new DrawerBuilder().withActivity(MainActivity.this).build();
 
@@ -394,7 +384,7 @@ public class MainActivity extends Activity {
                 .addDrawerItems(
                         item1,
                         item2,
-//                        item3,
+//                      item3,
                         item4,
                         item5
                 )
@@ -440,6 +430,7 @@ public class MainActivity extends Activity {
 
     }
 
+    // Performs location search
     private void performSearch(Map map){
         EditText searchBox = (EditText) findViewById(R.id.searchBox);
         //                progressBar.setVisibility(View.VISIBLE);
@@ -472,6 +463,7 @@ public class MainActivity extends Activity {
 //                searchButton.setVisibility(View.VISIBLE);
     }
 
+    // Performs suburb compare function
     private void performCompare(){
 
         Compare compare1 = new Compare();
@@ -482,32 +474,40 @@ public class MainActivity extends Activity {
 
         if(compareBox1.getText().toString().length() > 0 && compareBox2.getText().toString().length() > 0) {
             try {
-                //Retrieve location info results
+
+                //Retrieve location info results for suburb 1
                 String compareInput1 = compareBox1.getText().toString().trim().replaceAll("[^a-zA-Z ]", "");
                 compareBox1.setText(compareInput1);
                 OpenStreetMap.getInstance().resetInstance();
                 OpenStreetMap.getInstance().performSearch(compareInput1);
                 compare1.setLocationResult(OpenStreetMap.getInstance().getResult());
-                //Retrieve offence info results  ************Are we using the search input or lat lon for the QPS search
+
+                //Retrieve offence info results for suburb 1
                 QueenslandPoliceService.getInstance().resetInstance();
                 QueenslandPoliceService.getInstance().performSearch(OpenStreetMap.getInstance().getResult().getLat(), OpenStreetMap.getInstance().getResult().getLon());
                 qpsWaitTimer();
                 compare1.setOffenceResult(QueenslandPoliceService.getInstance().getOffenceBoundary());
 
+                //Retrieve location info results for suburb 2
                 String compareInput2 = compareBox2.getText().toString().trim().replaceAll("[^a-zA-Z ]", "");
                 compareBox2.setText(compareInput2);
                 OpenStreetMap.getInstance().resetInstance();
                 OpenStreetMap.getInstance().performSearch(compareInput2);
                 compare2.setLocationResult(OpenStreetMap.getInstance().getResult());
+
+                //Retrieve offence info results for suburb 2
                 QueenslandPoliceService.getInstance().resetInstance();
                 QueenslandPoliceService.getInstance().performSearch(OpenStreetMap.getInstance().getResult().getLat(), OpenStreetMap.getInstance().getResult().getLon());
                 qpsWaitTimer();
                 compare2.setOffenceResult(QueenslandPoliceService.getInstance().getOffenceBoundary());
 
+                // Plot results on graph
                 compare1.plotData();
                 compare2.plotData();
 
                 try {
+
+                    // Create linegraph that compares suburbs.
                     MainGraphs lineGraph = new MainGraphs();
                     TextView labelLineChart = (TextView) findViewById(R.id.labelLineChart);
                     labelLineChart.setText(compare1.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb() + " & " + compare2.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb());
@@ -515,12 +515,14 @@ public class MainActivity extends Activity {
                     lineGraph.createLineChart(lineGraphView, compare1, compare2);
                     lineGraphView.fitScreen();
 
+                    // Create bar graph for suburb 1
                     MainGraphs barChart1 = new MainGraphs();
                     TextView labelBarChart1 = (TextView) findViewById(R.id.labelBarChart1);
                     labelBarChart1.setText("Offences in " + compare1.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb());
                     BarChart barChartView1 = (BarChart) findViewById(R.id.barChart1);
                     barChart1.createBarChart(barChartView1, compare1);
 
+                    // Create bar graph for suburb 2
                     MainGraphs barChart2 = new MainGraphs();
                     TextView labelBarChart2 = (TextView) findViewById(R.id.labelBarChart2);
                     labelBarChart2.setText("Offences in " + compare2.getOffenceResult().getResult().get(0).getOffenceInfo().get(0).getSuburb());
@@ -528,9 +530,11 @@ public class MainActivity extends Activity {
                     barChart2.createBarChart(barChartView2, compare2);
                 } catch (IndexOutOfBoundsException e) {
                     showToast("No Results :(", 0);
+                } catch (NullPointerException e) {
+                    showToast("Too many offences to retrieve :(", 0);
                 }
             } catch (NullPointerException e) {
-                showToast("Enter suburbs to compare", 0);
+                showToast("Enter valid suburbs", 0);
             }
         }
         else {
@@ -551,21 +555,33 @@ public class MainActivity extends Activity {
 //                mainGraphs3.createBarChart(barChart);
     }
 
+    // Displays markers on the map
     private void displayMarkers(Map map){
         QueenslandPoliceService.getInstance().resetInstance();
         Log.i("Print", "Before QPS perform");
         QueenslandPoliceService.getInstance().performSearch(latitude, longitude);
         qpsWaitTimer();
         Log.i("Print", "After QPS timer");
+
         //clears existing map markers
+
         mapView.getOverlays().clear();
+
+        // Close marker bubbles when there's a new location search
         InfoWindow.closeAllInfoWindowsOn(mapView);
+
         map.setLocation(Double.parseDouble(latitude), Double.parseDouble(longitude));
-        map.addMarkers();
-        //Not using atm because polypoint from OSM is inaccurate and the result is too big causing some searches to not work
-        //map.displayPerimeter();
+        if (QueenslandPoliceService.getInstance().getOffenceBoundary() == null) {
+            showToast("Too many offences to retrieve :(", 1);
+        } else {
+            map.addMarkers();
+
+            //Not using atm because polypoint from OSM is inaccurate and the result is too big causing some searches to not work
+            //map.displayPerimeter();
+        }
     }
 
+    // Sever connection when it takes more than 10 seconds to retrieve offence data
     private void qpsWaitTimer(){
         int sleepDuration = 0;
         while (QueenslandPoliceService.getInstance().getOffenceBoundary() == null && sleepDuration < 10) {
@@ -587,6 +603,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // Hiding and showing pages depending on current view.
     private void changeView(int page) {
         Button searchButton = (Button) findViewById(R.id.searchButton);
         Button routeButton = (Button) findViewById(R.id.routeButton);
@@ -603,7 +620,8 @@ public class MainActivity extends Activity {
 
         RelativeLayout homeBarChartMenu = (RelativeLayout) findViewById(R.id.homeBarChartMenu);
 
-        if (page == 1) { // If page is "Home"
+        // If page is "Home"
+        if (page == 1) {
             topMenu.setVisibility(View.VISIBLE);
             filterMenu.setVisibility(View.GONE);
 
@@ -619,7 +637,9 @@ public class MainActivity extends Activity {
             homeBarChartMenu.setVisibility(View.GONE);
             statisticsOpen = false;
             mapView.setVisibility(View.VISIBLE);
-        } else if (page == 2) { // If page is "Compare"
+
+            // If page is "Compare"
+        } else if (page == 2) {
             topMenu.setVisibility(View.VISIBLE);
             filterMenu.setVisibility(View.GONE);
 
@@ -653,7 +673,9 @@ public class MainActivity extends Activity {
 //            statisticsOpen = false;
 //            mapView.setVisibility(View.VISIBLE);
 //        }
-        else if (page == 3) { // if page is "filter"
+
+        // if page is "filter"
+        else if (page == 3) {
             topMenu.setVisibility(View.GONE);
             filterMenu.setVisibility(View.VISIBLE);
 
@@ -668,7 +690,9 @@ public class MainActivity extends Activity {
             graphs.setVisibility(View.GONE);
             homeBarChartMenu.setVisibility(View.GONE);
             mapView.setVisibility(View.GONE);
-        } else if (page == 4) { // if page is "home page statistics"
+
+            // if page is "home page statistics"
+        } else if (page == 4) {
             topMenu.setVisibility(View.VISIBLE);
             filterMenu.setVisibility(View.GONE);
 
@@ -687,6 +711,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // Updates GPS and requests permissions
     public void updateGPS() throws SecurityException{
         Boolean enabled = true;
         int timer = 0;
@@ -732,38 +757,24 @@ public class MainActivity extends Activity {
             }
         }
 
-        //        long GPSLocationTime = 0;
-        //        if (null != locationGPS) { GPSLocationTime = locationGPS.getTime(); }
-        //
-        //        long NetLocationTime = 0;
-        //
-        //        if (null != locationNet) {
-        //            NetLocationTime = locationNet.getTime();
-        //        }
-        //
-        //        if ( 0 < GPSLocationTime - NetLocationTime ) {
-        //            latitude = locationGPS.getLatitude() + "";
-        //            longitude = locationGPS.getLongitude() + "";
-        //        }
-        //        else {
-        //            latitude = locationNet.getLatitude() + "";
-        //            longitude = locationNet.getLongitude() + "";
-        //        }
-
     }
 
+    // Gets static version of the app context
+    public static Context getAppContext() {
+        return MainActivity.context;
+    }
 
-//    void addingWaypoints(MapView map, GeoPoint startPoint) {
-//
-//        Routes route = new Routes();
-//        //      Placeholder route locations - Griffith Library to Harbour Town
-//        GeoPoint extraPoint = new GeoPoint(-27.926252, 153.382916);
-//
-//        Polyline roadOverlay = route.overlayRoutes(startPoint, extraPoint);
-////        Adds road overlay
-//        map.getOverlays().add(roadOverlay);
-//
-//        map.invalidate();
-//
-//    }
+    // Get static version of app activity
+    public static Activity getAppActivity() { return MainActivity.thisActivity;}
+
+    // Displays pop up dialogue boxes
+    public static void showToast(String message, int duration) {
+        //Display toast message. LENGTH_SHORT = 0, LENGTH_LONG = 1.
+        if (duration < 1) {
+            Toast.makeText(context, message, LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

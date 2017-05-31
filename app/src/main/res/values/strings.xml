@@ -9,6 +9,12 @@
     <string name="Help"> Help </string>
 
 
+    <!--Map Requirement-->
+    <string name="osm_require">© OpenStreetMap contributors</string>
+
+
+
+
     <!--About Page Content-->
     <string name="crimeMapDetails">CrimeMap is an interactive app that allows users to view real
         crime data supplied from the Queensland Police Service. </string>
@@ -20,7 +26,64 @@
 
     <string name="sponsored">Sponsored by Stephanie Conroy.</string>
 
-    <string name="data">Data provided by Queensland Police Service and Open Street Maps.</string>
+    <string name="osm_data">Map data was supplied by Open Street Map.</string>
+
+    <string name="qps_data">Crime data was provided by the Queensland Police Service - ©State of Queensland ( QPS ) 2016</string>
+
+    <string name="android_data">CrimeMap was created with Android Studio 2.3.</string>
+
+
+
+    <!--Help Page Content-->
+    <string name="main_help">How to use CrimeMap</string>
+
+
+    <string name="landing_head">Home Page</string>
+    <string name="landing_text">Landing Page Image</string>
+    <string name="landing_how"> Search \n    - Input a suburb within Queensland that you would like to gather data for. \n \n
+    Filter\n    - Opens the filter page to select offence types to display. \n \n
+    Menu\n    - Opens the menu to navigate to other pages. \n \n
+    GPS\n    - Performs a search on your current location. \n \n
+    Area Statistics\n    - Opens the statistics page which displays data on graphs.
+    </string>
+
+    <string name="filter_head">Filter Page</string>
+    <string name="filter_text">Filter Page Image</string>
+    <string name="filter_how">Time Period \n - The time period can range from 1 week up to 5 years from the current date. \n\n
+        Offence Types \n - Choose which offences are displayed. \n\n
+        Confirm \n - Updates the current search.
+    </string>
+
+    <string name="compare_head">Compare Page</string>
+    <string name="compare_text">Compare Page Image</string>
+    <string name="compare_how">Locations \n - Input different suburbs to compare offence statistics.\n\n
+    Comparison Results \n - Data will be displayed on a line graph over the time specified in the filter.
+    Bar graphs will display data by offence type for each suburb.</string>
+
+    <string name="menu_head">Menu Page</string>
+    <string name="menu_text">Menu Page Image</string>
+
+    <string name="offence_head">Offence Information</string>
+    <string name="offence_text">Offence Page Image</string>
+    <string name="offence_how">Offence Marker \n - Clicking on a blue offence marker will display the offence details. \n\n
+    Offence Information \n - Displays the offence type, date, and current status.
+    </string>
+
+    <string name="individual_header">Individual Offence Markers</string>
+    <string name="individual_markers">Individual Offence Markers are colour-coded based on the
+        severity of the offence. \n\n
+        White Shield \n - Low severity for an offence. \n\n
+    Yellow Shield /n - Medium severity for an offence. \n\n
+    Red Shield /n - High severity for an offence.
+    </string>
+
+    <string name="cluster_header">Cluster Offence Markers</string>
+    <string name="cluster_markers">Cluster Offence Markers are colour-coded based on how many
+        individual offences have occurred at that location. \n\n
+        Green Marker \n - 10 or less offences. \n\n
+        Yellow Marker \n - Between 10 and 20 offences.\n\n
+        Red Marker \n - 20 or more offences.</string>
+
 
     <!--Content Page Content-->
     <string name="help_content"> Help Page </string>

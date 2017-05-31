@@ -43,6 +43,7 @@ public class MainGraphs {
 
     public MainGraphs(){}
 
+    //Create bar chart
     public void createBarChart(BarChart barChart, Compare compare) {
 
         Map<String,String[]> offenceType = getGraphData(compare);
@@ -99,9 +100,10 @@ public class MainGraphs {
         barChart.invalidate();
     }
 
+    // Create pie chart
     public void createPieChart(PieChart pieChart, Compare compare) {
 
-        // Populate Dataillkj
+        // Get data for graphs
 
         Map<String,String[]> offenceType = getGraphData(compare);
         String[] keys = {"1", "8", "14", "17", "21", "27", "28", "29", "30", "35", "39", "45", "47", "51", "52", "54", "55"};
@@ -134,7 +136,7 @@ public class MainGraphs {
         PieDataSet dataSet = new PieDataSet(yAxis, "Number Of Offences");
 
         Description desc = new Description();
-        desc.setText("Number of Offences");     // Set Chart DescriptMion
+        desc.setText("Number of Offences");     // Set Chart Description
         pieChart.setDescription(desc);
         pieChart.setRotationEnabled(true);
         pieChart.setHoleRadius(20f);
@@ -146,9 +148,9 @@ public class MainGraphs {
         pieChart.invalidate();
     }
 
+    // Create line chart for compare suburb function
     public void createLineChart(final LineChart lineChart, Compare compare1, Compare compare2) {
 
-        //Line Chart//
         // Set Data
         ArrayList<Entry> lineData1 = new ArrayList();
         ArrayList<Entry> lineData2 = new ArrayList();
@@ -216,6 +218,7 @@ public class MainGraphs {
         lineChart.invalidate();
     }
 
+    // Create line chart for homepage statistics
     public void createLineChart(final LineChart lineChart, Compare compare1) {
 
         //Line Chart//
@@ -267,6 +270,7 @@ public class MainGraphs {
         lineChart.invalidate();
     }
 
+    // Get offence details for graphs from suburb
     private Map<String, String[]> getGraphData(Compare compare){
         java.util.Map<String,String[]> offenceType = new HashMap<String,String[]>();
         if (compare.getOffenceResult() != null) {

@@ -32,10 +32,9 @@ public class Cluster {
     private Drawable yellowIcon;
     private Drawable redIcon;
 
+    // Sets cluster images to instance variables
     public Cluster(Context context) {
         this.crimeMarkers = new RadiusMarkerClusterer(context);
-//        this.clusterIcon = ((BitmapDrawable) clusterIconD).getBitmap();
-//        this.crimeMarkers.setIcon(clusterIcon);
         this.crimeMarkers.getTextPaint().setTextSize(12 * context.getResources().getDisplayMetrics().density);
         this.markers = new ArrayList<Marker>();
         this.greenIcon = context.getDrawable(R.mipmap.green);
@@ -43,11 +42,12 @@ public class Cluster {
         this.redIcon = context.getDrawable(R.mipmap.red);
         crimeMarkers.setMaxClusteringZoomLevel(25);
     }
-
+    // Add an individual marker to cluster at same location
     public void addMarker(Marker marker) {
         this.markers.add(marker);
     }
 
+    // Sets cluster colour based on number of offences at the location
     public RadiusMarkerClusterer getCluster(){
         int size = markers.size();
 

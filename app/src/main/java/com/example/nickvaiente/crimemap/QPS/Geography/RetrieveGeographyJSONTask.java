@@ -25,12 +25,12 @@ public class RetrieveGeographyJSONTask
     public void doInBackground(String... params) {
         restTemplate = new RestTemplate(true);
         try {
-            //this line crashes my Android VM but try it on you machines and see if it works.
+
+//          Performs API call to the QPS servers
             Success success = restTemplate.getForObject(params[0], Success.class);
+
+//          Storing the result in an object in the geography/success class.
             QueenslandPoliceService.getInstance().setSuccess(success);
-            //OffenceBoundary class example
-//            OffenceBoundary offenceBoundary = restTemplate.getForObject(OFFENCE_URL, OffenceBoundary.class);
-//            Log.i("OffenceBoundary", offenceBoundary.getResult().get(0).getOffenceInfo().get(0).getPostcode());
 
         } catch(Exception ex) {
             Log.e("Error", ex.getMessage());

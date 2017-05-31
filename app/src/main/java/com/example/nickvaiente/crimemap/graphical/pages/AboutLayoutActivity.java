@@ -9,6 +9,7 @@ import com.example.nickvaiente.crimemap.R;
 
 public class AboutLayoutActivity extends AppCompatActivity {
 
+//    Retrieves the About Page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

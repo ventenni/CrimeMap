@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+//  Store the address details for a searched location. The json object containing the address details is retrieved form Open Street Map.
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "place_id",
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "importance",
         "address"
 })
+//  Store the details even if some items are missing eg. OSM doesn't return the 'boundingbox' for a location but returns everything else.
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LocationInfo {
     @JsonIgnoreProperties(ignoreUnknown = true)

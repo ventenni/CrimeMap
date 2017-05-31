@@ -18,8 +18,10 @@ public class RetrieveOffenceJSONTask
     public void doInBackground(String... params) {
         RestTemplate restTemplate = new RestTemplate(true);
         try {
-            //OffenceBoundary class example
+            // Performs QPS API call to retrieve offence details.
             OffenceBoundary offenceBoundary = restTemplate.getForObject(params[0], OffenceBoundary.class);
+
+            // Stores the result in an offenceBoundary object
             QueenslandPoliceService.getInstance().setOffenceBoundary(offenceBoundary);
             if ( offenceBoundary != null && offenceBoundary.getResult().get(0).getOffenceInfo().get(0).getPostcode() != null) {
                 Log.i("OffenceBoundaryPostcode", offenceBoundary.getResult().get(0).getOffenceInfo().get(0).getPostcode());

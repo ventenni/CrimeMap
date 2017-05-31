@@ -56,6 +56,7 @@ public class OpenStreetMap extends Activity{
         return result;
     }
 
+    //  Search for the location
     public void performSearch(String searchInput) {
         if (searchInput.length() > 0) {
             try {
@@ -67,6 +68,7 @@ public class OpenStreetMap extends Activity{
                 new RetrieveLocationJSONTask().execute(url);
                 int sleepDuration = 0;
 
+                //  The search function has 10secs to find the location before timing out
                 while (result == null && sleepDuration < 10) {
 //                    String searching;
                     TimeUnit.SECONDS.sleep(1);
@@ -95,6 +97,7 @@ public class OpenStreetMap extends Activity{
 
     }
 
+    //  Retrieve search suggestions based on location input by user
     public void performSuggestion(String searchInput) {
         if (searchInput.length() > 2) {
             try {
@@ -133,6 +136,7 @@ public class OpenStreetMap extends Activity{
         }
     }
 
+    //  Delete the location details stored from the previous OSM call so that it can be repopulated with new details.
     public void resetInstance(){
         this.result = null;
     }

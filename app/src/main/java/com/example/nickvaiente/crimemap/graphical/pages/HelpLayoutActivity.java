@@ -9,6 +9,7 @@ import com.example.nickvaiente.crimemap.R;
 
 public class HelpLayoutActivity extends AppCompatActivity {
 
+//    Retrieves the Help Page
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
